@@ -1,4 +1,6 @@
+import contextlib
 import os
+import sqlite3
 from datetime import datetime
 from pathlib import Path
 
@@ -9,7 +11,7 @@ from libtorrent import add_files, bencode, create_torrent, file_storage, set_pie
 import lz4.frame
 
 from pony import orm
-from pony.orm import db_session, desc, raw_sql, select
+from pony.orm import db_session, desc, raw_sql, select, set_sql_debug
 
 from tribler_core.modules.metadata_store.discrete_clock import clock
 from tribler_core.modules.metadata_store.orm_bindings.channel_node import (
@@ -31,6 +33,22 @@ CHANNEL_DIR_NAME_ID_LENGTH = 16  # Zero-padded long int in hex form
 CHANNEL_DIR_NAME_LENGTH = CHANNEL_DIR_NAME_PK_LENGTH + CHANNEL_DIR_NAME_ID_LENGTH
 BLOB_EXTENSION = '.mdblob'
 LZ4_END_MARK_SIZE = 4  # in bytes, from original specification. We don't use CRC
+
+fields_list = (
+    ('timestamp', 'BIGINT PRIMARY_KEY'),
+    ('metadata_type', 'SMALLINT'),
+    ('origin_id', 'BIGINT'),
+    ('id_', 'BIGINT'),
+    ('signature', 'BLOB'),
+    ('title', 'TEXT'),
+    ('tags', 'TEXT'),
+    ('num_entries', 'BIGINT'),
+    ('infohash', 'BLOB'),
+    ('size', 'BIGINT'),
+    ('torrent_date', 'DATETIME'),
+    ('tracker_info', 'TEXT'),
+    ('start_timestamp', 'BIGINT'),
+)
 
 
 def chunks(l, n):
@@ -197,6 +215,46 @@ def define_binding(db):
             update_timestamps_recursive(self)
 
             return self.commit_channel_torrent(new_start_timestamp=start_timestamp)
+
+        def dump_channel_to_sqlite_store(self):
+            channel_dir = path_util.abspath(self._channels_dir / self.dirname)
+            if not channel_dir.is_dir():
+                os.makedirs(channel_dir)
+
+            db_file = channel_dir / "test.ldb"
+            # db_file = Path("/tmp/bla.db")
+            with contextlib.closing(sqlite3.connect(db_file)) as connection, connection:
+                cursor = connection.cursor()
+                cursor.execute(
+                    f"CREATE TABLE exported_channel ({', '.join(item[0] + ' ' + item[1] for item in fields_list)});"
+                )
+                cursor.execute("BEGIN TRANSACTION;")
+                cursor.execute("END TRANSACTION;")
+
+            pk = self.public_key
+            print(str(db_file))
+            db.execute(f"ATTACH DATABASE '{str(db_file)}' AS ext;")
+            properties_names = f"{', '.join(item[0] for item in fields_list)}"
+            db.execute(
+                f"INSERT INTO ext.exported_channel ({properties_names}) SELECT {properties_names} FROM ChannelNode WHERE origin_id!=0 and public_key == $pk;"
+            )
+            db.commit()
+            db.execute(f"DETACH DATABASE 'ext';")
+
+        def read_channel_from_sqlite_store(self):
+            channel_dir = path_util.abspath(self._channels_dir / self.dirname)
+            db_file = channel_dir / "test.ldb"
+            # db_file = Path("/tmp/bla.db")
+            set_sql_debug(True)
+            print(str(db_file))
+            db.execute(f"ATTACH DATABASE '{str(db_file)}' AS ext;")
+            properties_names = f"{', '.join(item[0] for item in fields_list)}"
+            pk = self.public_key
+            db.execute(
+                f"INSERT INTO ChannelNode ({properties_names}, public_key) SELECT {properties_names}, $pk FROM ext.exported_channel;"
+            )
+            db.commit()
+            db.execute(f"DETACH DATABASE 'ext';")
 
         def update_channel_torrent(self, metadata_list, final_timestamp):
             """

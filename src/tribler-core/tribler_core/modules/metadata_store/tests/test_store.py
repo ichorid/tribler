@@ -2,10 +2,12 @@ import os
 import random
 import string
 from binascii import unhexlify
+from datetime import datetime
 
 from ipv8.database import database_blob
 from ipv8.keyvault.crypto import default_eccrypto
 
+from pony import orm
 from pony.orm import db_session, flush
 
 from tribler_core.modules.metadata_store.orm_bindings.channel_metadata import CHANNEL_DIR_NAME_LENGTH, entries_to_chunk
@@ -417,3 +419,34 @@ class TestMetadataStore(TriblerCoreTest):
 
         self.assertEqual(4, self.mds.get_num_channels())
         self.assertEqual(3, self.mds.get_num_torrents())
+
+    def test_sqlite_channel_format(self):
+        num_entries = 100
+        with db_session:
+            channel = self.mds.ChannelMetadata.create_channel('testchan')
+            md_list = [
+                self.mds.TorrentMetadata(
+                    origin_id=channel.id_, title='test' + str(x), status=NEW, infohash=database_blob(random_infohash())
+                )
+                for x in range(0, num_entries)
+            ]
+            md_list_dicts = [md.to_simple_dict() for md in md_list]
+            channel.dump_channel_to_sqlite_store()
+            orm.flush()
+            channel.local_version = 0
+            for md in md_list:
+                md.delete()
+
+        print (md_list_dicts)
+        print("bla")
+        start = datetime.now()
+        with db_session:
+            channel = self.mds.ChannelMetadata.get(public_key=channel.public_key, id_=channel.id_)
+            channel.read_channel_from_sqlite_store()
+            orm.flush()
+            md_list_dicts_new = [md.to_simple_dict() for md in channel.contents_list]
+        print(datetime.now() - start)
+
+        self.assertListEqual(md_list_dicts, md_list_dicts_new)
+
+        # channel_dir = self.mds.ChannelMetadata._channels_dir / channel.dirname
