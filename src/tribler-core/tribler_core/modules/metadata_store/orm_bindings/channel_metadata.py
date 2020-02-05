@@ -251,7 +251,7 @@ def define_binding(db):
             properties_names = f"{', '.join(item[0] for item in fields_list)}"
             pk = self.public_key
             db.execute(
-                f"INSERT INTO ChannelNode ({properties_names}, public_key) SELECT {properties_names}, $pk FROM ext.exported_channel;"
+                f"INSERT INTO ChannelNode ({properties_names}, status, health, public_key) SELECT {properties_names}, 0, 1, $pk FROM ext.exported_channel;"
             )
             db.commit()
             db.execute(f"DETACH DATABASE 'ext';")

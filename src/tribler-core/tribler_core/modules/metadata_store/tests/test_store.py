@@ -430,7 +430,8 @@ class TestMetadataStore(TriblerCoreTest):
                 )
                 for x in range(0, num_entries)
             ]
-            md_list_dicts = [md.to_simple_dict() for md in md_list]
+            q = self.mds.TorrentMetadata.select().sort_by(lambda g: g.id_)
+            md_list_dicts = [md.to_simple_dict() for md in q]
             channel.dump_channel_to_sqlite_store()
             orm.flush()
             channel.local_version = 0
@@ -444,7 +445,7 @@ class TestMetadataStore(TriblerCoreTest):
             channel = self.mds.ChannelMetadata.get(public_key=channel.public_key, id_=channel.id_)
             channel.read_channel_from_sqlite_store()
             orm.flush()
-            md_list_dicts_new = [md.to_simple_dict() for md in channel.contents_list]
+            md_list_dicts_new = [md.to_simple_dict() for md in channel.contents.sort_by(lambda g:g.id_)]
         print(datetime.now() - start)
 
         self.assertListEqual(md_list_dicts, md_list_dicts_new)
