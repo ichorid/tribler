@@ -222,22 +222,36 @@ def define_binding(db):
                 os.makedirs(channel_dir)
 
             db_file = channel_dir / "test.ldb"
+            print (db_file)
             # db_file = Path("/tmp/bla.db")
             with contextlib.closing(sqlite3.connect(db_file)) as connection, connection:
                 cursor = connection.cursor()
                 cursor.execute(
                     f"CREATE TABLE exported_channel ({', '.join(item[0] + ' ' + item[1] for item in fields_list)});"
                 )
-                cursor.execute("BEGIN TRANSACTION;")
-                cursor.execute("END TRANSACTION;")
 
             pk = self.public_key
+            id_ = self.id_
             print(str(db_file))
             db.execute(f"ATTACH DATABASE '{str(db_file)}' AS ext;")
             properties_names = f"{', '.join(item[0] for item in fields_list)}"
+            properties_names_child = f"{', '.join(('child.' + item[0]) for item in fields_list)}"
+            #db.execute(
+            #    f"INSERT INTO ext.exported_channel ({properties_names}) SELECT {properties_names} FROM ChannelNode WHERE origin_id!=0 and public_key == $pk;"
+            #)
+
+            print (properties_names)
             db.execute(
-                f"INSERT INTO ext.exported_channel ({properties_names}) SELECT {properties_names} FROM ChannelNode WHERE origin_id!=0 and public_key == $pk;"
+                f"WITH RECURSIVE cat_tree AS "
+                f" (SELECT {properties_names} FROM ChannelNode "
+                f"   WHERE id_ == $id_ AND public_key == $pk " 
+                f"   UNION ALL "
+                f"   SELECT {properties_names_child} " 
+                f"   FROM ChannelNode as child "
+                f"   JOIN cat_tree as parent on parent.id_ == child.origin_id AND child.public_key == $pk) "
+                f"INSERT INTO ext.exported_channel ({properties_names}) SELECT {properties_names} FROM cat_tree;"
             )
+
             db.commit()
             db.execute(f"DETACH DATABASE 'ext';")
 

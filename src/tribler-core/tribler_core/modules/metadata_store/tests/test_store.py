@@ -3,6 +3,7 @@ import random
 import string
 from binascii import unhexlify
 from datetime import datetime
+from time import sleep
 
 from ipv8.database import database_blob
 from ipv8.keyvault.crypto import default_eccrypto
@@ -437,6 +438,7 @@ class TestMetadataStore(TriblerCoreTest):
             channel.local_version = 0
             for md in md_list:
                 md.delete()
+        sleep(10000)
 
         print (md_list_dicts)
         print("bla")
