@@ -166,7 +166,6 @@ def define_binding(db):
             """
             Delete the channel dir contents and create it anew.
             Use it to consolidate fragmented channel torrent directories.
-            :param key: The public/private key, used to sign the data
             """
 
             # TODO: optimize this stuff with SQL and better tree traversal algorithms?
@@ -235,7 +234,7 @@ def define_binding(db):
             torrent, infohash = create_torrent_from_dir(channel_dir, self._channels_dir / (self.dirname + ".torrent"))
             torrent_date = datetime.utcfromtimestamp(torrent[b'creation date'])
 
-            return ({"infohash": infohash, "timestamp": final_timestamp, "torrent_date": torrent_date}, torrent)
+            return {"infohash": infohash, "timestamp": final_timestamp, "torrent_date": torrent_date}, torrent
 
         def commit_channel_torrent(self, new_start_timestamp=None, commit_list=None):
             """

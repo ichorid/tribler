@@ -113,6 +113,7 @@ class MetadataStore(object):
         self.channels_dir = channels_dir
         self.my_key = my_key
         self._logger = logging.getLogger(self.__class__.__name__)
+        orm.sql_debug(True)
 
         self._shutting_down = False
         self.batch_size = 10  # reasonable number, a little bit more than typically fits in a single UDP packet
