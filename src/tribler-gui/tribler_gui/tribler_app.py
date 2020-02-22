@@ -8,11 +8,6 @@ from tribler_core.utilities.unicode import ensure_unicode
 from tribler_gui.code_executor import CodeExecutor
 from tribler_gui.single_application import QtSingleApplication
 
-# Set the QT application parameters before creating any instances of the application.
-QCoreApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-os.environ['QT_AUTO_SCREEN_SCALE_FACTOR'] = "1"
-
 
 class TriblerApplication(QtSingleApplication):
     """
