@@ -79,7 +79,7 @@ class DownloadManager(TaskManager):
 
         self.default_alert_mask = lt.alert.category_t.error_notification | lt.alert.category_t.status_notification | \
                                   lt.alert.category_t.storage_notification | lt.alert.category_t.performance_warning | \
-                                  lt.alert.category_t.tracker_notification | lt.alert.category_t.debug_notification
+                                  lt.alert.category_t.tracker_notification | lt.alert.category_t.debug_notification |  lt.alert.category_t.all_categories
         self.session_stats_callback = None
         self.state_cb_count = 0
 
@@ -356,6 +356,8 @@ class DownloadManager(TaskManager):
                     self.dht_health_manager.received_bloomfilters(decoded['r']['id'],
                                                                   bytearray(decoded['r']['BFsd']),
                                                                   bytearray(decoded['r']['BFpe']))
+        else:
+            self._logger.debug("LIBTORRENT ALERT %s %s", str(alert_type), str(alert))
 
     def update_ip_filter(self, lt_session, ip_addresses):
         self._logger.debug('Updating IP filter %s', ip_addresses)

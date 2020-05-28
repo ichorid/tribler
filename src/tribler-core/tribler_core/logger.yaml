@@ -52,7 +52,6 @@ handlers:
         class: logging.StreamHandler
         level: DEBUG
         formatter: standard
-        filters: [info_filter]
         stream: ext://sys.stdout
 
     error_console:
@@ -89,13 +88,13 @@ loggers:
         handlers: [console, error_console, info_memory_handler, error_memory_handler]
         propagate: no
 
-    LibtorrentMgr:
-        level: INFO
+    DownloadManager:
+        level: DEBUG
         handlers: [console, error_console, info_memory_handler, error_memory_handler]
         propagate: no
 
-    LibtorrentDownloadImpl:
-        level: INFO
+    DownloadState:
+        level: DEBUG
         handlers: [console, error_console, info_memory_handler, error_memory_handler]
         propagate: no
 
