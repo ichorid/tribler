@@ -1,7 +1,7 @@
 import hashlib
 import sys
 import time
-from asyncio import Future, gather, sleep
+from asyncio import Future, sleep
 from binascii import unhexlify
 from collections import Counter
 from distutils.version import LooseVersion
@@ -57,20 +57,17 @@ class TriblerTunnelCommunity(HiddenTunnelCommunity):
         num_competing_slots = kwargs.pop('competing_slots', 15)
         num_random_slots = kwargs.pop('random_slots', 5)
         self.bandwidth_wallet = kwargs.pop('bandwidth_wallet', None)
-        socks_listen_ports = kwargs.pop('socks_listen_ports', None)
+        self.socks_listen_ports = kwargs.pop(
+            'socks_listen_ports',
+            self.tribler_session.config.get_tunnel_community_socks5_listen_ports() if self.tribler_session
+            else [-1, -1, -1, -1, -1])
         state_path = self.tribler_session.config.get_state_dir() if self.tribler_session else path_util.Path()
         self.exitnode_cache = kwargs.pop('exitnode_cache', state_path / 'exitnode_cache.dat')
         super(TriblerTunnelCommunity, self).__init__(*args, **kwargs)
         self._use_main_thread = True
 
-        if self.tribler_session:
-            if self.tribler_session.config.get_tunnel_community_exitnode_enabled():
-                self.settings.peer_flags.add(PEER_FLAG_EXIT_ANY)
-
-            if not socks_listen_ports:
-                socks_listen_ports = self.tribler_session.config.get_tunnel_community_socks5_listen_ports()
-        elif socks_listen_ports is None:
-            socks_listen_ports = range(1080, 1085)
+        if self.tribler_session and self.tribler_session.config.get_tunnel_community_exitnode_enabled():
+            self.settings.peer_flags.add(PEER_FLAG_EXIT_ANY)
 
         self.bittorrent_peers = {}
         self.dispatcher = TunnelDispatcher(self)
@@ -82,7 +79,7 @@ class TriblerTunnelCommunity(HiddenTunnelCommunity):
 
         # Start the SOCKS5 servers
         self.socks_servers = []
-        for port in socks_listen_ports:
+        for port in self.socks_listen_ports:
             socks_server = Socks5Server(port, self.dispatcher)
             self.register_task('start_socks_%d' % port, socks_server.start)
             self.socks_servers.append(socks_server)

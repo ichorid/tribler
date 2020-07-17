@@ -434,9 +434,6 @@ class Session(TaskManager):
             self.ipv8 = IPv8(ipv8_config, enable_statistics=self.config.get_ipv8_statistics())
             await self.ipv8.start()
 
-            self.config.set_anon_proxy_settings(2, ("127.0.0.1",
-                                                    self.
-                                                    config.get_tunnel_community_socks5_listen_ports()))
             self.ipv8_start_time = timemod.time()
             self.load_ipv8_overlays()
             self.enable_ipv8_statistics()
@@ -447,6 +444,9 @@ class Session(TaskManager):
 
         # Note that currently we should only start libtorrent after the SOCKS5 servers have been started
         if self.config.get_libtorrent_enabled():
+            self.config.set_anon_proxy_settings(2, ("127.0.0.1",
+                                                    self.
+                                                    config.get_tunnel_community_socks5_listen_ports()))
             self.readable_status = STATE_START_LIBTORRENT
             from tribler_core.modules.libtorrent.download_manager import DownloadManager
             self.dlmgr = DownloadManager(self)
