@@ -121,6 +121,7 @@ class TriblerRequestManager(QNetworkAccessManager):
 
 
 # Request manager singleton.
+# ACHTUNG! The manager will not send *anything* until there is a QCoreApplication object running!
 request_manager = TriblerRequestManager()
 
 
@@ -146,7 +147,7 @@ class TriblerNetworkRequest(QObject):
         on_cancel=lambda: None,
         decode_json_response=True,
     ):
-        QObject.__init__(self)
+        super().__init__()
 
         # data and raw_data should never come together
         if data and raw_data:
@@ -158,6 +159,8 @@ class TriblerNetworkRequest(QObject):
             url = request_manager.get_base_url() + endpoint
         url += ("?" + tribler_urlencode(url_params)) if url_params else ""
 
+        self.reply_data = None
+        self.status_code = None
         self.decode_json_response = decode_json_response
         self.time = time()
         self.url = url
@@ -175,10 +178,15 @@ class TriblerNetworkRequest(QObject):
         self.reply = None  # to hold the associated QNetworkReply object
 
         # Pass the newly created object to the manager singleton, so the object can be dispatched immediately
+        self.add_to_request_manager()
+
+    def add_to_request_manager(self):
+        # This method is necessary to facilitate patching for vcrpy testing
         request_manager.add_request(self)
 
     def on_finished(self, request):
         status_code = self.reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        self.status_code = status_code
 
         # Set the status code in the performed requests log
         for item in performed_requests:
@@ -191,11 +199,11 @@ class TriblerNetworkRequest(QObject):
                 self.received_json.emit(None, self.reply.error())
                 return
 
-            data = self.reply.readAll()
+            self.reply_data = bytes(self.reply.readAll())
             if not self.decode_json_response:
-                self.received_json.emit(data, self.reply.error())
+                self.received_json.emit(self.reply_data, self.reply.error())
                 return
-            json_result = json.loads(bytes(data), encoding='latin_1')
+            json_result = json.loads(self.reply_data, encoding='latin_1')
             if (
                 'error' in json_result
                 and self.capture_errors
@@ -206,7 +214,7 @@ class TriblerNetworkRequest(QObject):
                 self.received_json.emit(json_result, self.reply.error())
         except ValueError:
             self.received_json.emit(None, self.reply.error())
-            logging.error("No json object could be decoded from data: %s" % data)
+            logging.error("No json object could be decoded from data: %s" % self.reply_data)
         finally:
             self.destruct()  # the request object should be properly destroyed no matter what
 
