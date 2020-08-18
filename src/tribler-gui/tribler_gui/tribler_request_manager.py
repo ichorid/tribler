@@ -26,6 +26,10 @@ def tribler_urlencode(data):
     return data
 
 
+class CassetteHolder:
+    cassette = None
+
+
 def tribler_urlencode_single(key, value):
     utf8_key = quote_plus(str(key).encode('utf-8'))
     # Convert bool values to ints
@@ -49,6 +53,8 @@ class TriblerRequestManager(QNetworkAccessManager):
 
     max_in_flight = 50
     request_timeout_interval = 15  # seconds
+
+    cassette = None
 
     def __init__(self):
         QNetworkAccessManager.__init__(self)
@@ -133,6 +139,7 @@ class TriblerNetworkRequest(QObject):
     # during the callback call.
     received_json = pyqtSignal(object, int)
     request_finished = pyqtSignal(object, int)
+    cassette = None
 
     def __init__(
         self,

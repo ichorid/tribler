@@ -34,9 +34,11 @@ def api_port():
     return get_random_port()
 
 
-@my_vcr.use_cassette("fixtures/vcr_cassettes/tribler.yaml")
+# @my_vcr.use_cassette("fixtures/vcr_cassettes/tribler.yaml")
 @pytest.fixture(scope="module")
 def window(api_port):
+    with my_vcr.use_cassette("fixtures/vcr_cassettes/tribler.yaml"):
+        pass
     core_manager.START_FAKE_API = True
     tribler_gui.defs.DEFAULT_API_PORT = api_port
 
@@ -305,7 +307,6 @@ def test_settings(tribler_api, window):
 
 @pytest.mark.guitest
 def test_downloads(tribler_api, window):
-    return
     go_to_and_wait_for_downloads(window)
     screenshot(window, name="downloads_all")
     QTest.mouseClick(window.downloads_downloading_button, Qt.LeftButton)

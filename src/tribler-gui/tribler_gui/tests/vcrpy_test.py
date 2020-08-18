@@ -13,8 +13,6 @@ import vcr
 from vcr.errors import CannotOverwriteExistingCassetteException
 from vcr.request import Request
 
-app = QCoreApplication([])
-
 
 def fullname(o):
     # o.__module__ + "." + o.__class__.__qualname__ is an example in
@@ -32,17 +30,13 @@ def fullname(o):
 
 
 class TriblerVCRRequest(TriblerNetworkRequest):
-    _baseclass = TriblerNetworkRequest
-    cassette = None
-
-    def __init__(self, *args, **kwargs):
-        self._vcr_request = None
-        super().__init__(*args, **kwargs)
-
     def add_to_request_manager(self):
         self._vcr_request = Request(method=self.method, uri=self.url, body="", headers={})
         print("\nMODIFIED")
-        if self.cassette.can_play_response_for(self._vcr_request):
+        cassette = tribler_gui.tribler_request_manager.CassetteHolder.cassette
+
+        print(tribler_gui.tribler_request_manager.CassetteHolder.cassette)
+        if cassette.can_play_response_for(self._vcr_request):
             # These are parts of TriblerRequest manager copy-pasted for simplicity
             response = self.cassette.play_response(self._vcr_request)
             self.reply_data = response['body']['string'].decode('latin_1')
@@ -61,9 +55,9 @@ class TriblerVCRRequest(TriblerNetworkRequest):
                 self.received_json.emit(json_result, None)
             self.destruct()
         else:
-            if self.cassette.write_protected and self.cassette.filter_request(self._vcr_request):
-                raise CannotOverwriteExistingCassetteException(cassette=self.cassette, failed_request=self._vcr_request)
-            super().add_to_request_manager()
+            if cassette.write_protected and self.cassette.filter_request(self._vcr_request):
+                raise CannotOverwriteExistingCassetteException(cassette=cassette, failed_request=self._vcr_request)
+            tribler_gui.tribler_request_manager.request_manager.add_request(self)
 
     def on_finished(self, request):
         headers = {}
@@ -79,14 +73,20 @@ class TriblerVCRRequest(TriblerNetworkRequest):
         self.cassette.append(self._vcr_request, response)
 
 
+class TriblerRequestManagerVCR(tribler_gui.tribler_request_manager.TriblerRequestManager):
+    _baseclass = tribler_gui.tribler_request_manager.TriblerRequestManager
+    cassette = None
+
+
+class CassetteHolderPatched(tribler_gui.tribler_request_manager.CassetteHolder):
+    pass
+
+
 my_vcr = vcr.config.VCR(
     custom_patches=(
-        (tribler_gui.tribler_request_manager.TriblerNetworkRequest, 'on_finished', TriblerVCRRequest.on_finished),
-        (
-            tribler_gui.tribler_request_manager.TriblerNetworkRequest,
-            'add_to_request_manager',
-            TriblerVCRRequest.add_to_request_manager,
-        ),
+        # (tribler_gui.tribler_request_manager.TriblerNetworkRequest, 'on_finished', TriblerVCRRequest.on_finished),
+        # ( tribler_gui.tribler_request_manager.TriblerNetworkRequest, 'add_to_request_manager', TriblerVCRRequest.add_to_request_manager, ),
+        # ( tribler_gui.tribler_request_manager, 'CassetteHolder', CassetteHolderPatched, ),
     )
 )
 
@@ -100,6 +100,7 @@ class MyTestCase(unittest.TestCase):
             print(str_response)
 
     def test_vcrpy2(self):
+        QCoreApplication([])
         with my_vcr.use_cassette('fixtures/vcr_cassettes/test_qt2.yaml'):
             loop = QtCore.QEventLoop()
 
