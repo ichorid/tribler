@@ -7,6 +7,7 @@ from PyQt5.QtCore import QCoreApplication
 
 import tribler_gui
 import tribler_gui.tribler_request_manager
+from tribler_gui.tribler_request_manager import TriblerNetworkRequest
 
 import vcr
 from vcr.errors import CannotOverwriteExistingCassetteException
@@ -15,8 +16,23 @@ from vcr.request import Request
 app = QCoreApplication([])
 
 
-class TriblerVCRRequest(tribler_gui.tribler_request_manager.TriblerNetworkRequest):
-    _baseclass = tribler_gui.tribler_request_manager.TriblerNetworkRequest
+def fullname(o):
+    # o.__module__ + "." + o.__class__.__qualname__ is an example in
+    # this context of H.L. Mencken's "neat, plausible, and wrong."
+    # Python makes no guarantees as to whether the __module__ special
+    # attribute is defined, so we take a more circumspect approach.
+    # Alas, the module name is explicitly excluded from __qualname__
+    # in Python 3.
+
+    module = o.__class__.__module__
+    if module is None or module == str.__class__.__module__:
+        return o.__class__.__name__  # Avoid reporting __builtin__
+    else:
+        return module + '.' + o.__class__.__name__
+
+
+class TriblerVCRRequest(TriblerNetworkRequest):
+    _baseclass = TriblerNetworkRequest
     cassette = None
 
     def __init__(self, *args, **kwargs):
@@ -25,6 +41,7 @@ class TriblerVCRRequest(tribler_gui.tribler_request_manager.TriblerNetworkReques
 
     def add_to_request_manager(self):
         self._vcr_request = Request(method=self.method, uri=self.url, body="", headers={})
+        print("\nMODIFIED")
         if self.cassette.can_play_response_for(self._vcr_request):
             # These are parts of TriblerRequest manager copy-pasted for simplicity
             response = self.cassette.play_response(self._vcr_request)
@@ -63,7 +80,14 @@ class TriblerVCRRequest(tribler_gui.tribler_request_manager.TriblerNetworkReques
 
 
 my_vcr = vcr.config.VCR(
-    custom_patches=((tribler_gui.tribler_request_manager, 'TriblerNetworkRequest', TriblerVCRRequest),)
+    custom_patches=(
+        (tribler_gui.tribler_request_manager.TriblerNetworkRequest, 'on_finished', TriblerVCRRequest.on_finished),
+        (
+            tribler_gui.tribler_request_manager.TriblerNetworkRequest,
+            'add_to_request_manager',
+            TriblerVCRRequest.add_to_request_manager,
+        ),
+    )
 )
 
 
@@ -88,9 +112,10 @@ class MyTestCase(unittest.TestCase):
                 already_finished.append(1)
                 print("QUITE")
 
-            req = tribler_gui.tribler_request_manager.TriblerNetworkRequest(
+            req = TriblerNetworkRequest(
                 "http://httpbin.org/get", null_callback, capture_errors=True, on_cancel=null_callback
             )
+            print("\nBLA: ", fullname(req))
             if not already_finished:
                 loop.exec_()
             print("loop_exec2")

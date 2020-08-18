@@ -181,7 +181,7 @@ class TriblerNetworkRequest(QObject):
         self.add_to_request_manager()
 
     def add_to_request_manager(self):
-        # This method is necessary to facilitate patching for vcrpy testing
+        # This method is necessary to facilitate patching for vcrpy-based testing
         request_manager.add_request(self)
 
     def on_finished(self, request):

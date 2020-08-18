@@ -1,0 +1,405 @@
+interactions:
+- request:
+    body: ''
+    headers: {}
+    method: GET
+    uri: http://localhost:58298/downloads?get_pieces=1
+  response:
+    body:
+      string: '{"downloads": [{"name": "\u0190\u2c72\u16a3\u00f5\u16a1\u01c4\u00e9y\u0244\u014f\u01b6\u01eb\u024d\u01db\u01a7\u16a9U.info",
+        "infohash": "c316fa442252aab975a2f4c7cda81955361ac8f9", "status": "DLSTATUS_STOPPED_ON_ERROR",
+        "num_peers": 346, "num_seeds": 458, "progress": 0.7091745220062118, "size":
+        2918011, "speed_down": 109927, "speed_up": 117537, "eta": 1234, "hops": 0,
+        "anon_download": false, "files": [{"name": "File 0", "size": 5452370, "progress":
+        0.5599645187001784, "included": true}, {"name": "File 1", "size": 8392919,
+        "progress": 0.9086538619839714, "included": true}, {"name": "File 2", "size":
+        9081274, "progress": 0.49525508409422037, "included": false}, {"name": "File
+        3", "size": 9493284, "progress": 0.1755011702469721, "included": false}, {"name":
+        "File 4", "size": 2593484, "progress": 0.7915291929991075, "included": true},
+        {"name": "File 5", "size": 1463612, "progress": 0.6495487717294225, "included":
+        true}, {"name": "File 6", "size": 9142933, "progress": 0.3448905306251121,
+        "included": true}, {"name": "File 7", "size": 8191367, "progress": 0.6147027539936689,
+        "included": true}, {"name": "File 8", "size": 3828613, "progress": 0.5825071299148324,
+        "included": false}, {"name": "File 9", "size": 2369237, "progress": 0.5432900048902217,
+        "included": false}, {"name": "video.avi", "size": 3708457, "progress": 1.0,
+        "included": true, "index": 0}], "trackers": [{"url": "[PEX]", "status": "working",
+        "peers": 42}], "destination": "/", "availability": 1.2846943637106856, "total_pieces":
+        1859, "total_up": 256977, "total_down": 407758, "ratio": 0.6302193948371337,
+        "error": "unknown", "time_added": 1425665963, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 75, "num_connected_seeds": 82, "channel_download":
+        false, "pieces": "/QAIeLWbbs5iCClAFHAKFUEV/QaK+mikilpJPkhMx5AWwHur3VA5AvgKEC46JFiyWZQCDEHNJkCBiwwVaQ0aIwrhqQHOpxmZgCSFDQyMQQwI5tGTcCUMYMCoLgSsyxEMJBqH8TF72RejbGkFp5BnmBF0MVEQFI8WbwBJHlRMR0JO8cwVabKZJUBR1GVkUC8sAfoljEWMuywNkECQKgZSubIKliKV/wJDQBwSBpiBCBsckVzRCCSqCpSCh0lkCHRx4FBfD/kYYoc2lfH1UShNANFiEfEEfQpiUUCe/APBkYKAsY3AgIeFBgA="},
+        {"name": "4x\u0135\u00a7\u01ed\u16aaL.avi", "infohash": "0665c2ee17b24b08eed46ef59b4a636b850e2066",
+        "status": "DLSTATUS_ALLOCATING_DISKSPACE", "num_peers": 300, "num_seeds":
+        990, "progress": 0.049792538542952514, "size": 2495939, "speed_down": 507300,
+        "speed_up": 584058, "eta": 1234, "hops": 3, "anon_download": true, "files":
+        [{"name": "File 0", "size": 2176871, "progress": 0.9946510202875922, "included":
+        false}, {"name": "File 1", "size": 6685715, "progress": 0.941072082937048,
+        "included": false}, {"name": "File 2", "size": 9782295, "progress": 0.38898843250054727,
+        "included": true}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 0.9683707009878167, "total_pieces":
+        1512, "total_up": 492197, "total_down": 394005, "ratio": 1.2492151114833567,
+        "error": "unknown", "time_added": 1441983519, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 64, "num_connected_seeds": 55, "channel_download":
+        false, "pieces": "pjsjAIhRh5kDmIB2TgJtpGkSSTg6AL860IFJi+FlEhYIYwQI6Qs1bzH0PCQkU3SCidCpTGEzMrSoJgAsAoVxYzExPPFRIRXOKEkTMHOByhAM07I4SwAVFx5TSJthDABAzLAjiAcARWJzL7CrFFh+gtIIsI1A/aAwp+cAgv+qGRyCDqNmCtIQC7omBBP7yk5a09VDjAgByahHxAyCqQDcpSO8jRps3BQax5kDo0BHQDYgwCigOOUAT5URLMQQ"},
+        {"name": "\u00a3\u00a8N\u0209\u00a2\u0123\u0121\u022d\u00bf\u16d0\u00a2\u00c5\u021d\u0186\u00a7\u0194\u015a\u00dd\u00f4.xls",
+        "infohash": "15b8ba52f5cf79e73d0ecf8e45ff7043c6f1778d", "status": "DLSTATUS_ALLOCATING_DISKSPACE",
+        "num_peers": 35, "num_seeds": 899, "progress": 0.4001365217171877, "size":
+        2597309, "speed_down": 433678, "speed_up": 650916, "eta": 1234, "hops": 0,
+        "anon_download": false, "files": [{"name": "File 0", "size": 5217483, "progress":
+        0.7446383211170462, "included": false}, {"name": "File 1", "size": 1515161,
+        "progress": 0.3156026749706571, "included": true}], "trackers": [{"url": "[PEX]",
+        "status": "working", "peers": 42}], "destination": "/", "availability": 2.1124720170353912,
+        "total_pieces": 924, "total_up": 657942, "total_down": 916773, "ratio": 0.7176716591784444,
+        "error": "unknown", "time_added": 1476843043, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 58, "num_connected_seeds": 78, "channel_download":
+        false, "pieces": "o5AxEYMdEuk3DEcVCmSdA64w9SwTkLYlENg42LYo5pGAitSXoWICZzGUgWCx1CYjLgolxStCRj6PEEpVCM5aOBIIuAS8asBuJrkkNwUgF9MKQrRjDhABjTCYDIsAU6GAZBJeDh6AooThB9iY6ZzW6IQAQwA="},
+        {"name": "\u018c\u16a0\u021d0\u015c\u01ed\u16d7\u2c72\u00b1\u0188v\u015a\u01d7\u0134\u0179\u010e\u017d\u0210.exe",
+        "infohash": "d43ca24a10abdaf7634d6fcf5b8b03a20230bdad", "status": "DLSTATUS_WAITING4HASHCHECK",
+        "num_peers": 824, "num_seeds": 501, "progress": 0.04161077765769483, "size":
+        1213690, "speed_down": 513640, "speed_up": 35791, "eta": 1234, "hops": 0,
+        "anon_download": false, "files": [{"name": "File 0", "size": 3337736, "progress":
+        0.1795362782307165, "included": false}, {"name": "File 1", "size": 7802879,
+        "progress": 0.5968117853109789, "included": true}, {"name": "File 2", "size":
+        2853222, "progress": 0.35515636836050046, "included": true}, {"name": "File
+        3", "size": 9546142, "progress": 0.5456586032215057, "included": false}, {"name":
+        "File 4", "size": 3489670, "progress": 0.05131677909124632, "included": false},
+        {"name": "File 5", "size": 3654351, "progress": 0.648550420303557, "included":
+        false}, {"name": "File 6", "size": 9327150, "progress": 0.5172231134937537,
+        "included": false}, {"name": "File 7", "size": 5571022, "progress": 0.05276632854208463,
+        "included": true}, {"name": "File 8", "size": 3536115, "progress": 0.535801921579671,
+        "included": true}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 2.672542242908667, "total_pieces":
+        337, "total_up": 749098, "total_down": 417270, "ratio": 1.7952356987082705,
+        "error": "unknown", "time_added": 1471820472, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 77, "num_connected_seeds": 22, "channel_download":
+        false, "pieces": "QyiAqwkQFYlDgAYcUMIpmcPd7LMVIAQyRUUQCOHhiQDWQcZLX0WuDTgigA=="},
+        {"name": "\u0209\u0242\u16b5Q\u16a9\u16ba\u00e9\u010a\u2c7d\u0151\u01e1\u017f\u0242eQ\u01f7\u16e7\u2c7d\u0236\u00eb\u011a\u16b3\u00fe\u0145\u0107\u0225\u16bf\u018d.dmg",
+        "infohash": "65443ed504ab67a1d370030a6d6ef414f7ca5731", "status": "DLSTATUS_SEEDING",
+        "num_peers": 984, "num_seeds": 846, "progress": 0.8403249584916804, "size":
+        1618594, "speed_down": 928557, "speed_up": 939751, "eta": 1234, "hops": 0,
+        "anon_download": false, "files": [{"name": "File 0", "size": 6939062, "progress":
+        0.7753981159432828, "included": false}, {"name": "File 1", "size": 940157,
+        "progress": 0.011449592370311845, "included": true}, {"name": "File 2", "size":
+        3883929, "progress": 0.2400569263135619, "included": false}, {"name": "File
+        3", "size": 7290111, "progress": 0.7866130527393038, "included": true}, {"name":
+        "File 4", "size": 9297175, "progress": 0.42293564440937303, "included": true},
+        {"name": "File 5", "size": 5687594, "progress": 0.00631793684604065, "included":
+        false}, {"name": "File 6", "size": 4501696, "progress": 0.3378961102936776,
+        "included": false}, {"name": "File 7", "size": 691692, "progress": 0.038445940730443606,
+        "included": false}, {"name": "File 8", "size": 1031746, "progress": 0.7316586958441033,
+        "included": true}, {"name": "File 9", "size": 3790797, "progress": 0.7852699750781491,
+        "included": false}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 1.9811989107959493, "total_pieces":
+        393, "total_up": 780945, "total_down": 623703, "ratio": 1.2521103794594544,
+        "error": "unknown", "time_added": 1431227545, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 60, "num_connected_seeds": 73, "channel_download":
+        false, "pieces": "pAAAFYKZJqU5KH2g16ZaEYGge8WfKWoBFEAMqI0l2pjNpTIFNBglkpgCFsXS4cWI9gA="},
+        {"name": ",Q\u0163\u0118>\u16bd\u0135\u00bf\u16e2u\u2c62\u00af\u013a\u2c73\u014c\u0248\u0385\u01ca\u0171gi\u01a4\u023d\u0244\u01c7\u00b5\u0156\u16ad.sh",
+        "infohash": "8f7d3459ab28a1d32c86858fcb725971e4434ae2", "status": "DLSTATUS_METADATA",
+        "num_peers": 469, "num_seeds": 552, "progress": 0.6734156196132035, "size":
+        1559524, "speed_down": 861588, "speed_up": 828587, "eta": 1234, "hops": 3,
+        "anon_download": true, "files": [{"name": "File 0", "size": 3390579, "progress":
+        0.7120803909178917, "included": true}, {"name": "File 1", "size": 6288788,
+        "progress": 0.926759070733333, "included": true}, {"name": "File 2", "size":
+        2245208, "progress": 0.2966683156841523, "included": false}, {"name": "File
+        3", "size": 8037195, "progress": 0.8785607107043581, "included": true}, {"name":
+        "File 4", "size": 2481025, "progress": 0.6819818708991789, "included": false},
+        {"name": "File 5", "size": 5708338, "progress": 0.8539324153764961, "included":
+        false}, {"name": "File 6", "size": 6026421, "progress": 0.06436971799859259,
+        "included": true}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 1.4035975840123176, "total_pieces":
+        1822, "total_up": 288282, "total_down": 987208, "ratio": 0.29201748770269287,
+        "error": "unknown", "time_added": 1467845180, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 96, "num_connected_seeds": 50, "channel_download":
+        false, "pieces": "6JSEDGBTN3KY6sRqTB9zhamDhK8E6ULVpBggbIowVRjCu3FFALoziEyiJKCgRY5RApC2QpCcEjMbFtBoIghPBMhmZAaOEBQ2rJbAuAnZccEODDe2gA1E42JEqBAiWJgtCCNGgy9KFADipGuoAF3TuKokEc+Trs9KCxiB24yBsdIMMBD8dkuIRqKxtoFCoKATljIQ9cjLE3hbap5iFmmG7hAnGQgkrGGACng+IUJMq4OtAHgrSHYkiIS9GehZtQpDW4mGBYdOAAMwcwnkgOJg2BYDuYiHMkVCQ7w97naOBQyxgvxk"},
+        {"name": "\u0195\u00d4\u0137i\u2c6c\u01eb-\u020e#\u023c\u0121\u0201\u16eb\u16b6\u0157\u16ab\u0211\u0109l\u16b4\u0370\u00e2W.\u2c78i\u0170\u014f\u2c68.exe",
+        "infohash": "da32c7a8f150853ae483b95e150d557dfc0f534d", "status": "DLSTATUS_DOWNLOADING",
+        "num_peers": 372, "num_seeds": 612, "progress": 0.6986841790230237, "size":
+        2390643, "speed_down": 157233, "speed_up": 481468, "eta": 1234, "hops": 2,
+        "anon_download": true, "files": [{"name": "File 0", "size": 9424637, "progress":
+        0.11297718470107065, "included": false}, {"name": "File 1", "size": 3119669,
+        "progress": 0.9875862414215334, "included": false}, {"name": "File 2", "size":
+        3719450, "progress": 0.11414649804236732, "included": false}, {"name": "File
+        3", "size": 1341976, "progress": 0.02159563406652576, "included": true}, {"name":
+        "File 4", "size": 2184544, "progress": 0.9601604413948231, "included": true},
+        {"name": "File 5", "size": 2073081, "progress": 0.9497024548688319, "included":
+        true}, {"name": "File 6", "size": 894092, "progress": 0.9242871652263602,
+        "included": false}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 2.0062999931515346, "total_pieces":
+        1347, "total_up": 805576, "total_down": 969183, "ratio": 0.8311908071024771,
+        "error": "unknown", "time_added": 1446647645, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 50, "num_connected_seeds": 41, "channel_download":
+        false, "pieces": "YpQpUfV9QAsCZgJhNb6CFBkmIbgNCBsgQRuEL0wBhIGgpIQCSS54BJBAoVS7DR0QQCYIERLKARhKeKFOY2PwBNV8Zpf1MkmAIDAjJAJ3v78VNXcCCohGUxm1lZwCBmikudUeNQcRb8pcKAClDAdTQK0sGwVIkWsZBAEKFAIG/gcTwjOpHcuOkuMFIzBxbUzFSQFoDQC81vcduTA+GU/nMVxAAkaDiIDygA=="},
+        {"name": "\u16ef\u00d7\u2c69\u01e5\u0236\u023f|k\u0372c\u011d\u01ea\u16c6\u022f\u019c\u022e\u01e1<\u0194\u0157\u01b6\u022c\u0106\u0123\u0122\u16bd\u00f7\u01ba\u0105t.txt",
+        "infohash": "47b0999fa06415ebce2781201593d143427fcbdb", "status": "DLSTATUS_CIRCUITS",
+        "num_peers": 510, "num_seeds": 115, "progress": 0.33631348938424355, "size":
+        1989769, "speed_down": 725371, "speed_up": 116294, "eta": 1234, "hops": 0,
+        "anon_download": false, "files": [{"name": "File 0", "size": 5766592, "progress":
+        0.0018764063476069959, "included": false}, {"name": "File 1", "size": 3389217,
+        "progress": 0.4378988279397832, "included": true}, {"name": "File 2", "size":
+        9769267, "progress": 0.4834916372718323, "included": true}, {"name": "File
+        3", "size": 4216507, "progress": 0.13694851675109188, "included": true}, {"name":
+        "File 4", "size": 6915122, "progress": 0.08121625666242172, "included": true},
+        {"name": "File 5", "size": 4023955, "progress": 0.9511990871168768, "included":
+        true}, {"name": "File 6", "size": 2209466, "progress": 0.06273707844078413,
+        "included": true}, {"name": "File 7", "size": 2181718, "progress": 0.6483775320650711,
+        "included": false}, {"name": "File 8", "size": 8237597, "progress": 0.32330970751390076,
+        "included": false}, {"name": "File 9", "size": 7429122, "progress": 0.8024820162794822,
+        "included": false}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 4.090171108953896, "total_pieces":
+        1070, "total_up": 894326, "total_down": 930754, "ratio": 0.9608618388962067,
+        "error": "unknown", "time_added": 1436569742, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 52, "num_connected_seeds": 17, "channel_download":
+        false, "pieces": "oCjA9QMQSRF0QjIo+BEn9TJnOGALSkGHYQgOqwQxMXcegHzKBYoR3BYIEQEh4bVKh01ShnMwSIJMIwok4FBBSQybf5jNwSCgEql41VmHdg6axYOAFaFOCLMMgob0qwFGDwF4iygIFsxKiDIGhIsILlQ9WgyQAY4BwqDhiv9pGY0ZRir48Zw="},
+        {"name": "\u0177\u015d.sh", "infohash": "ac1cf850de201285492c414020dda5e6340b90fb",
+        "status": "DLSTATUS_CIRCUITS", "num_peers": 776, "num_seeds": 519, "progress":
+        0.0869144161413462, "size": 2368088, "speed_down": 581927, "speed_up": 385784,
+        "eta": 1234, "hops": 2, "anon_download": true, "files": [{"name": "File 0",
+        "size": 7052987, "progress": 0.4652837262241065, "included": false}, {"name":
+        "File 1", "size": 5940555, "progress": 0.6961479636772745, "included": true},
+        {"name": "File 2", "size": 4396665, "progress": 0.07915805045485436, "included":
+        false}, {"name": "File 3", "size": 7009480, "progress": 0.439731326693101,
+        "included": false}, {"name": "File 4", "size": 7013294, "progress": 0.9882498464824653,
+        "included": false}, {"name": "File 5", "size": 4972207, "progress": 0.0410819880392177,
+        "included": true}, {"name": "File 6", "size": 4469702, "progress": 0.5453199733073283,
+        "included": false}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 2.078450027373343, "total_pieces":
+        1350, "total_up": 225270, "total_down": 457629, "ratio": 0.49225464295313454,
+        "error": "unknown", "time_added": 1475847213, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 37, "num_connected_seeds": 30, "channel_download":
+        false, "pieces": "nIogFNcpcgQgpOSIrXJgAQAiFwFZCEaxePP9RQQqlJV0AHYQDlkUamiTAwIAGtqkAIEYWcIxqbwbwAiVDQK3HekMc2eADIjYwHvtcwLxECYcCTR0cK8TVi86IFIBEwf9IhrCbYpei6qJLIDCZUCQnJNpE9XEEoQqN+JUAYCgXGOxDRHGRREAgmGMI0BAlUADszeggRJtFygJ3RfMb+EXH4KGhTuLBc+OQA=="},
+        {"name": "\u010c&\u0157\u16e8\u00ba\u013d\u015f\u01e6\u0122\u022c\u16baL\u0371\u01a9\u0238\u16a4\u0196\u0101\u010b.xls",
+        "infohash": "c3a1d7d4291e320b99f11921bca51ed0e16fd0eb", "status": "DLSTATUS_HASHCHECKING",
+        "num_peers": 165, "num_seeds": 693, "progress": 0.3698132351935428, "size":
+        421335, "speed_down": 447038, "speed_up": 391618, "eta": 1234, "hops": 1,
+        "anon_download": true, "files": [{"name": "File 0", "size": 1889151, "progress":
+        0.4909359880213561, "included": false}, {"name": "File 1", "size": 5187653,
+        "progress": 0.42530041555994, "included": false}, {"name": "File 2", "size":
+        4240955, "progress": 0.9045257310315586, "included": false}, {"name": "File
+        3", "size": 171237, "progress": 0.5897283660590966, "included": true}, {"name":
+        "File 4", "size": 5379474, "progress": 0.5657461250424013, "included": true},
+        {"name": "File 5", "size": 9205418, "progress": 0.5773434945215675, "included":
+        true}], "trackers": [{"url": "[PEX]", "status": "working", "peers": 42}],
+        "destination": "/", "availability": 1.6939190427716877, "total_pieces": 1475,
+        "total_up": 295405, "total_down": 156819, "ratio": 1.883732200817503, "error":
+        "unknown", "time_added": 1484106066, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 2, "num_connected_seeds": 95, "channel_download":
+        false, "pieces": "SivMRJDnYEihjSgeDQYpEiGAasIBGTlCpkjaiBDirIF7ABzBG/sU/oMgySEeTeMTJIg8BIUISroYb2MwUXq4wqnGShoYYBAlY4KF2sgKBLQC1lo4WxEMYdWtW8eZH0lRFFsgDA8m+gDm1zpvQa5SDGSKDBouGQRgFURwUeJCS4EeLIDMWggxmNAaH8GRhtErdDBOIShixNKiLBMEUyOsgJS6FF2agdkACBECR0AWhmICAEkIjKQlCKA="},
+        {"name": "\u0225\u0372\u16ba\u020d\u16e3\u01de\u00ca\u00ecg\u0199\u014e\u020b\u0134\u2c73\u012f\u01f7R\u01be\u00e7\u0144\u010f\u01a2\u0195\u01cc:\u0111.avi",
+        "infohash": "879701d533b6e2ac276b308f20baa1a4438dfe7b", "status": "DLSTATUS_STOPPED_ON_ERROR",
+        "num_peers": 876, "num_seeds": 683, "progress": 0.25857619098916673, "size":
+        1688815, "speed_down": 969223, "speed_up": 882522, "eta": 1234, "hops": 0,
+        "anon_download": false, "files": [{"name": "File 0", "size": 7562298, "progress":
+        0.06176034703129796, "included": false}, {"name": "File 1", "size": 5812802,
+        "progress": 0.9133513845945784, "included": true}, {"name": "File 2", "size":
+        9967356, "progress": 0.7958452319085447, "included": false}, {"name": "File
+        3", "size": 2575652, "progress": 0.6255001856359794, "included": true}, {"name":
+        "File 4", "size": 4554438, "progress": 0.08258249903964099, "included": false},
+        {"name": "File 5", "size": 8483448, "progress": 0.6248432850486936, "included":
+        true}], "trackers": [{"url": "[PEX]", "status": "working", "peers": 42}],
+        "destination": "/", "availability": 3.9800720310346165, "total_pieces": 1280,
+        "total_up": 782762, "total_down": 51459, "ratio": 15.211372160360675, "error":
+        "unknown", "time_added": 1449282477, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 78, "num_connected_seeds": 20, "channel_download":
+        false, "pieces": "xkgAUJywl2Ea0xEkBImyRKcZAzIEbA0JC2hf0q/xYEkVvETrQC8HoCe0SD91iXFKIiK3qSJADaVRAIS+R2whldg7ASHikWOmAEpCBzGYC8gD74LSKaKquwNKgJ47MWmAKoYiCF6ANYoDq2KM3CXJCOpwsrpNGBABTOT0GhUrxskLoEIGxDgQWEQB3BGIBSDBDUo0QUUNAI2IDcMxcPH9Jw=="},
+        {"name": "\u0230\u0147\u0107\u037a\u01f5\u16dd.info", "infohash": "cf579f49c94cad8744761e2be5978d50c7f09b67",
+        "status": "DLSTATUS_STOPPED", "num_peers": 690, "num_seeds": 356, "progress":
+        0.4854502855937104, "size": 340361, "speed_down": 835512, "speed_up": 720693,
+        "eta": 1234, "hops": 0, "anon_download": false, "files": [{"name": "File 0",
+        "size": 2232501, "progress": 0.6743472419639795, "included": true}], "trackers":
+        [{"url": "[PEX]", "status": "working", "peers": 42}], "destination": "/",
+        "availability": 4.875670726144802, "total_pieces": 685, "total_up": 703041,
+        "total_down": 127333, "ratio": 5.521278851515318, "error": "unknown", "time_added":
+        1479077283, "vod_mode": false, "vod_prebuffering_progress_consec": 0.34, "num_connected_peers":
+        20, "num_connected_seeds": 41, "channel_download": false, "pieces": "5RhbiEuoRwgEDhTJpiAYCTJKQHoC6eAQY2ARhdiZYcA/cIKRNcBjBhpCdofUHb9qFQziNhh0ZwdVRkhxGAJmQot6ufOSIWCDxLDLIlJkFAncVUApwXg="},
+        {"name": "\u013c\u010c\u2c71\u018b\u01b7u\u01cf\u0387\u00ab\u2c7e\u0101\u0202\u01d2\u16a5\u0374\u00e0\u01c3\u0110\u16e7\u01ec\u0187\u16d4\u0229..sh",
+        "infohash": "c6247d3943cdb4254a48203cbf58bdec7fbd9c0f", "status": "DLSTATUS_STOPPED_ON_ERROR",
+        "num_peers": 974, "num_seeds": 379, "progress": 0.2466087856294693, "size":
+        353709, "speed_down": 79655, "speed_up": 73112, "eta": 1234, "hops": 0, "anon_download":
+        false, "files": [{"name": "File 0", "size": 9011233, "progress": 0.8563930320435676,
+        "included": true}, {"name": "File 1", "size": 1107956, "progress": 0.6600024536778452,
+        "included": false}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 2.0074754241799777, "total_pieces":
+        1258, "total_up": 34814, "total_down": 644086, "ratio": 0.05405178811525169,
+        "error": "unknown", "time_added": 1417968320, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 50, "num_connected_seeds": 98, "channel_download":
+        false, "pieces": "fIPuZUgwnhGO0hlEUJMghrKNQ0acNMiWaEBJMDQzVHMIMIUAGkaCi0duyYJiHBpbRo7kigwmomqbmiIXe5WVHRkNpBqVElWZQg33LBslIC7C0cPmwZGmEAhWTMbEiQUpQCAm4gAJJtMesJ8IRyIrJU9MExoYoQTn5BIJabyh3kUQ8jLXXkQvIGkERyBNUQcAoLhnBQGMRNTHt4InmAA="},
+        {"name": "x\u01e6\u16bf\u00b1\u0113\u013a\u0201f\u00a4\u011f\u0126\u0207\u01d5\u0149\u0171\u01a2\u0226\u0106e\u2c7f\u037c\u0233\u021d\u01ea\u2c62\u16da.info",
+        "infohash": "7ad0c5ffe959a80169b628fc3823ac5d5b527b42", "status": "DLSTATUS_DOWNLOADING",
+        "num_peers": 482, "num_seeds": 521, "progress": 0.5846996270951018, "size":
+        1554149, "speed_down": 988619, "speed_up": 707440, "eta": 1234, "hops": 3,
+        "anon_download": true, "files": [{"name": "File 0", "size": 1761565, "progress":
+        0.24259706118159252, "included": true}, {"name": "File 1", "size": 6733470,
+        "progress": 0.6744683558952551, "included": false}], "trackers": [{"url":
+        "[PEX]", "status": "working", "peers": 42}], "destination": "/", "availability":
+        0.36257815586531184, "total_pieces": 1809, "total_up": 806945, "total_down":
+        63504, "ratio": 12.706994834971026, "error": "unknown", "time_added": 1458297698,
+        "vod_mode": false, "vod_prebuffering_progress_consec": 0.34, "num_connected_peers":
+        97, "num_connected_seeds": 18, "channel_download": false, "pieces": "AGGBlkXOSKRx0BBJzYQhL7HIR0WoW0Kv5suCWtEPAtB8IDKmC2OQCCQCAQJReyDXODIMAJYiBoSsCEFcIHxFv2gQoiSYZ4CkCEgpYNFcRmiHHAo2iRiZJUKJYDSpqwI3SqFjbRkKBowQaZ2BUnIwxwDxCGQgmBkDLRTE8AKJ+gaxiyknQ53YGx4XExscAi2qtJnBTCTTGVhPONQDFXTBbQyCLYFClGArCFGH3igi9pWErQERQyBaBP4JbX4RoNlENE2OgIUZTJBE4JKhTqdEAApIaAgfhn0jZEmcipRQICTsfQA="},
+        {"name": "B\u013a\u0244\u16c6\u16de\u00dc\u0175\u2c72\u01bfZ\u16ef\u01d8\u01e6.avi",
+        "infohash": "29f255cb4f25a05e350c58275b22cb48f7271b4a", "status": "DLSTATUS_METADATA",
+        "num_peers": 971, "num_seeds": 263, "progress": 0.5885874198270956, "size":
+        188563, "speed_down": 568577, "speed_up": 658555, "eta": 1234, "hops": 0,
+        "anon_download": false, "files": [{"name": "File 0", "size": 5437995, "progress":
+        0.7389472033195036, "included": false}, {"name": "File 1", "size": 9852070,
+        "progress": 0.2687939194900304, "included": false}, {"name": "File 2", "size":
+        5297636, "progress": 0.7282470209228155, "included": false}, {"name": "File
+        3", "size": 1794788, "progress": 0.31329256189172094, "included": true}, {"name":
+        "File 4", "size": 1897840, "progress": 0.5182308143105976, "included": true},
+        {"name": "File 5", "size": 6222280, "progress": 0.5073931356286684, "included":
+        false}, {"name": "File 6", "size": 7023781, "progress": 0.756945440682872,
+        "included": true}, {"name": "File 7", "size": 248370, "progress": 0.5858526181938292,
+        "included": false}, {"name": "File 8", "size": 2936945, "progress": 0.6317061222507708,
+        "included": true}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 4.627702007075353, "total_pieces":
+        1114, "total_up": 504906, "total_down": 114009, "ratio": 4.428650369707655,
+        "error": "unknown", "time_added": 1442362435, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 59, "num_connected_seeds": 38, "channel_download":
+        false, "pieces": "qVGyQAcUDSVBKATeBKjKLYfnHJBDpQyIjyanBSKkQQYmCYggCf6EDHKyQlUECCiRhHyDiWpB+ApnAMJBPc+JXiQDF1xRcA6lEA5mwNhoFCkDcIZSkRiFZVITMbakEihxwFuSpmoQUMJ3QGd/TgBxNWWkeMMD3MEOSeFk5RT35TNyCMY0VgERuRgEFgA="},
+        {"name": "\u0116\u16df\u0162\u00e4\u16e4\u0186\u16ba\u00f2\u0146!K\u0195\u16b9_\u0162\u16c5}\u16d5\u00dd\u0204\u020b\u0177\u0230\u0209\u022b.exe",
+        "infohash": "f682338c03cf6328c8935306bfca535ceaab8fea", "status": "DLSTATUS_METADATA",
+        "num_peers": 732, "num_seeds": 826, "progress": 0.7526860580621215, "size":
+        2831963, "speed_down": 880685, "speed_up": 216741, "eta": 1234, "hops": 1,
+        "anon_download": true, "files": [{"name": "File 0", "size": 4107322, "progress":
+        0.8658567137949302, "included": false}, {"name": "File 1", "size": 192015,
+        "progress": 0.3127176632253894, "included": false}, {"name": "File 2", "size":
+        4478267, "progress": 0.3084953410072432, "included": true}, {"name": "File
+        3", "size": 2117815, "progress": 0.32444783433036783, "included": true}, {"name":
+        "File 4", "size": 4378791, "progress": 0.6136865070385444, "included": false},
+        {"name": "File 5", "size": 6445977, "progress": 0.8332097779158935, "included":
+        false}], "trackers": [{"url": "[PEX]", "status": "working", "peers": 42}],
+        "destination": "/", "availability": 0.1317897744117158, "total_pieces": 716,
+        "total_up": 985754, "total_down": 556121, "ratio": 1.7725530954594413, "error":
+        "unknown", "time_added": 1403845506, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 95, "num_connected_seeds": 85, "channel_download":
+        false, "pieces": "RAxFM8aBCgbe8QDYA5RKM2EHbPIqQc5uQBFIwqgyoL4VgR27AgkpU45jyIlESP+B4HH4MaApDOChHkxGSDEKPNy6zKEikJQNTGKTUmlAVBzVUBL4g105FhJw"},
+        {"name": "\u0220\u16beT\u011fV\u16f0\u0108\u014f\u16c1\u0235\u01f7\u01d1\u16e1\u015b\u00bb\u00e3\u01da\u00bc.dmg",
+        "infohash": "3a735174dbe4feacfd951cad33e543d64148965f", "status": "DLSTATUS_METADATA",
+        "num_peers": 956, "num_seeds": 942, "progress": 0.49737115480707583, "size":
+        1680352, "speed_down": 732707, "speed_up": 774660, "eta": 1234, "hops": 0,
+        "anon_download": false, "files": [{"name": "File 0", "size": 6083121, "progress":
+        0.73793660425413, "included": true}, {"name": "File 1", "size": 2673626, "progress":
+        0.019665613141520488, "included": false}, {"name": "File 2", "size": 2012936,
+        "progress": 0.6618043732549965, "included": false}, {"name": "File 3", "size":
+        5996419, "progress": 0.049376303222496976, "included": true}, {"name": "File
+        4", "size": 1666138, "progress": 0.3297398311974695, "included": false}, {"name":
+        "File 5", "size": 9262614, "progress": 0.7213178240006058, "included": false},
+        {"name": "File 6", "size": 3106442, "progress": 0.5917933679186692, "included":
+        true}, {"name": "File 7", "size": 145835, "progress": 0.29220276885102914,
+        "included": false}, {"name": "File 8", "size": 1859597, "progress": 0.8888260718396783,
+        "included": false}, {"name": "File 9", "size": 4337281, "progress": 0.6557827538111557,
+        "included": true}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 3.8201840102918956, "total_pieces":
+        1145, "total_up": 153805, "total_down": 26561, "ratio": 5.7906328827980875,
+        "error": "unknown", "time_added": 1426667351, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 100, "num_connected_seeds": 24, "channel_download":
+        false, "pieces": "ACE3zWHhV6IgzlIQg6BvrjAqgBiFVXt5ptQGCCCMhYZAn6oOM4BMFrjb4ARIeUQbCoZVbIwdHCMhME+7zPTIFLwIH1JYAVn8BqUCvRQIXQAnhgoTJE8QYMAyJzbcZxKRtOkHeIQBOQqsccAYBwXtDpCuCgIBegwGKIs3UCSXCegbncAw0AsFAW46jiEnw4EA"},
+        {"name": "\u00d7\u16ad\u0165\u2c64\u0126\u16d9\u0149\u0235\u16d0\u16af\u011c\u00ceh\u0377\u00c3\u0232\u16b2\u01b3\u0188\u0138.mp3",
+        "infohash": "cad673ac0143e68bd59ced520c8574bef6cf6ddd", "status": "DLSTATUS_SEEDING",
+        "num_peers": 356, "num_seeds": 768, "progress": 0.8243225347589715, "size":
+        1561491, "speed_down": 286651, "speed_up": 621919, "eta": 1234, "hops": 2,
+        "anon_download": true, "files": [{"name": "File 0", "size": 793434, "progress":
+        0.0028206612748297166, "included": true}], "trackers": [{"url": "[PEX]", "status":
+        "working", "peers": 42}], "destination": "/", "availability": 4.328806102500281,
+        "total_pieces": 1281, "total_up": 91095, "total_down": 913498, "ratio": 0.09972107218625548,
+        "error": "unknown", "time_added": 1426576044, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 38, "num_connected_seeds": 39, "channel_download":
+        false, "pieces": "M9gIcJMNxwvqgZSgIeAKEUSWsKgIBAqSgNJCrpGHQxSMqIRrwQA1kNwjaIJC9tA+QpJgPSEaK2KC48WwMSHNVlaVfWEA7OCNgaJ5LQFkTQApWhZzWAAkzjlpUMwHZqmkEEQFBWib6PlGRLY0G1m2JDDWU4GIRAd0ko61mJBCx4SeNWwCDF0eIsvgKDDSNINK+PQgZEwUwEhiIzLic5mZNIA="},
+        {"name": "\u0136\u0213\u00b3\u01e9\u0185=\u00df\u00d9\u0238.sh", "infohash":
+        "e1e5c99796268c98711c4153368e9c14b62b5a5c", "status": "DLSTATUS_SEEDING",
+        "num_peers": 225, "num_seeds": 807, "progress": 0.4367901718609477, "size":
+        3007819, "speed_down": 8636, "speed_up": 788121, "eta": 1234, "hops": 1, "anon_download":
+        true, "files": [{"name": "File 0", "size": 7284587, "progress": 0.014179487829975135,
+        "included": true}, {"name": "File 1", "size": 9562941, "progress": 0.10346458614652387,
+        "included": true}, {"name": "File 2", "size": 3404251, "progress": 0.2917813582407518,
+        "included": true}, {"name": "File 3", "size": 9885675, "progress": 0.6198055957097018,
+        "included": true}, {"name": "File 4", "size": 9477235, "progress": 0.5223226841496977,
+        "included": true}, {"name": "File 5", "size": 2200742, "progress": 0.13839685217720532,
+        "included": false}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 4.326090465744292, "total_pieces":
+        902, "total_up": 104722, "total_down": 233031, "ratio": 0.44939085357742103,
+        "error": "unknown", "time_added": 1409005329, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 80, "num_connected_seeds": 36, "channel_download":
+        false, "pieces": "kiI8Ya1QYAmfAQG4u7IhaVQGMYYucBJYTPOogtgMuZIah+AEpdgYksOIw4RQSwyIAXs2ADUYIl3ca5ojLOXWBkQsCwARTkDjk8JJFNAUQnEmZUqjkxNgCMEJgiunEl2OXk2BIymDYUp0icwCbHhFtcA="},
+        {"name": "\u0372\u0215\u2c77\u00ce\u0216yC\u00f1\u00ba\u0114\u00d2E\u00a5\u018e\u0223a\u021f\u0183\u012e\u024c\u0110\u020e\u014a\u01ca\u01be\u014a.txt",
+        "infohash": "34efc5b8507b2c5b104121b85b63453914a55da6", "status": "DLSTATUS_WAITING4HASHCHECK",
+        "num_peers": 122, "num_seeds": 604, "progress": 0.7090561558093436, "size":
+        1420240, "speed_down": 570951, "speed_up": 473816, "eta": 1234, "hops": 1,
+        "anon_download": true, "files": [{"name": "File 0", "size": 2474540, "progress":
+        0.7674443476924159, "included": true}, {"name": "File 1", "size": 1489197,
+        "progress": 0.293993741352528, "included": true}, {"name": "File 2", "size":
+        876150, "progress": 0.03207154610536267, "included": true}, {"name": "File
+        3", "size": 7559883, "progress": 0.7004770996174534, "included": false}, {"name":
+        "File 4", "size": 8865817, "progress": 0.47903520413424316, "included": true},
+        {"name": "File 5", "size": 7913274, "progress": 0.6463414692995494, "included":
+        false}, {"name": "File 6", "size": 5379200, "progress": 0.9223490244733908,
+        "included": false}, {"name": "File 7", "size": 8265014, "progress": 0.1379766417045717,
+        "included": true}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 4.499941979628769, "total_pieces":
+        1908, "total_up": 336590, "total_down": 562204, "ratio": 0.5986972700300959,
+        "error": "unknown", "time_added": 1460294382, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 99, "num_connected_seeds": 91, "channel_download":
+        true, "pieces": "Du5BShCpS4gXXhY4oKI+bBItuKkaXoaYgBHBHKHtiHsaxweKmiAhBqVVZ/EqQPQkGRZiHVokIFDW4kSKgAtBw0nRBYomgOLbSVQ8AYlwdMpRjFCcxNAygMsviUDIoSRh5lPikJqFiQCHOMCQAJHwK8ACQihRBHSKPFxSJoQAQdSaAZEAW+A43omFUR3sB1HfOYcAD1oRFAEgW4OXqUBY6rwIFZwAGBAPAENOZAi8DodslFFVJyT9QvXFZOq4NRB2gloRgHQrQ1BiWFZgqaCFDcIQWEEGKI3CIbSG3MJWoj0gjSapp4CgKe2gX1UBfDA="},
+        {"name": "\u0182\u01a0\u0224\u014f\u0165\u01fb\u038ch\u16e2\u16b3\u00f5\u01c4\u00e3\u0165\u0170\u01c1\u020aQ\u00ae.sh",
+        "infohash": "37fbd9b92d70e641716a9ed0b3a405e9870283e4", "status": "DLSTATUS_METADATA",
+        "num_peers": 637, "num_seeds": 883, "progress": 0.059704850266148135, "size":
+        2891596, "speed_down": 339819, "speed_up": 561774, "eta": 1234, "hops": 3,
+        "anon_download": true, "files": [{"name": "File 0", "size": 7326356, "progress":
+        0.9652935936840282, "included": false}, {"name": "File 1", "size": 5018919,
+        "progress": 0.9172953913568898, "included": true}, {"name": "File 2", "size":
+        7247795, "progress": 0.9606809464450361, "included": true}, {"name": "File
+        3", "size": 7669407, "progress": 0.9936928394860324, "included": false}, {"name":
+        "File 4", "size": 6942604, "progress": 0.11454200295008776, "included": false},
+        {"name": "File 5", "size": 4345309, "progress": 0.7367335781014742, "included":
+        true}, {"name": "File 6", "size": 265377, "progress": 0.8730795346840984,
+        "included": false}, {"name": "File 7", "size": 2024729, "progress": 0.676888152484265,
+        "included": false}], "trackers": [{"url": "[PEX]", "status": "working", "peers":
+        42}], "destination": "/", "availability": 3.3214659100078423, "total_pieces":
+        1748, "total_up": 65443, "total_down": 264593, "ratio": 0.24733458557104684,
+        "error": "unknown", "time_added": 1412155089, "vod_mode": false, "vod_prebuffering_progress_consec":
+        0.34, "num_connected_peers": 27, "num_connected_seeds": 74, "channel_download":
+        true, "pieces": "jmwArUAMaIBEOj2knNC+0I6TJ5WPD1E44dRgCKU4ecSUrN+EbC5f/UBUiAg1MJQyrRmLMBVyeZBmQM1pYEXJJEU1WErUHAgNG1oVzDlRsNY8hwcA+IJE3RzLKyeegAMng4CqaqcyAZAVKyBwjSmAG5yBGap0EVIT0gDxU0wEYYcay1N4cmVoJpxAdIGpchUlIiV2EyVhhsJIjbAGWVEIVwyMSBAEDzz1gpeJC3DAmkAJAoFCQt5BOJBgGhO3ZGFkcC8RUTRaEYCGCvIFVojiHlQA+HIGMBPWRm6A"}]}'
+    headers:
+      Content-Length:
+      - '32949'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 10 Aug 2020 20:13:50 GMT
+      Server:
+      - Python/3.8 aiohttp/3.6.2
+    status:
+      code: 200
+      message: null
+- request:
+    body: ''
+    headers: {}
+    method: GET
+    uri: http://localhost:58298/settings
+  response:
+    body:
+      string: '{"settings": {"general": {"family_filter": true, "minport": 1234, "log_dir":
+        "/Users/tribleruser/log"}, "libtorrent": {"enabled": true, "port": 1234, "proxy_type":
+        0, "proxy_server": null, "proxy_auth": null, "utp": true, "max_upload_rate":
+        100, "max_download_rate": 200, "max_connections_download": 5}, "watch_folder":
+        {"enabled": true, "directory": "/Users/tribleruser/watchfolder"}, "download_defaults":
+        {"seeding_mode": "ratio", "seeding_time": 60, "seeding_ratio": 2.0, "saveas":
+        "bla", "number_hops": 1, "anonymity_enabled": true, "safeseeding_enabled":
+        true, "add_download_to_channel": false}, "ipv8": {"enabled": true, "use_testnet":
+        false, "statistics": true}, "trustchain": {"enabled": true}, "tunnel_community":
+        {"exitnode_enabled": true}, "search_community": {"enabled": true}, "resource_monitor":
+        {"enabled": true}, "chant": {"enabled": true, "channel_edit": true}}, "ports":
+        {}}'
+    headers:
+      Content-Length:
+      - '892'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 10 Aug 2020 20:13:52 GMT
+      Server:
+      - Python/3.8 aiohttp/3.6.2
+    status:
+      code: 200
+      message: null
+version: 1

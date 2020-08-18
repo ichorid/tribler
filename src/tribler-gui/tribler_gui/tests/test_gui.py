@@ -20,10 +20,10 @@ from tribler_core.utilities.network_utils import get_random_port
 import tribler_gui
 import tribler_gui.core_manager as core_manager
 from tribler_gui.dialogs.feedbackdialog import FeedbackDialog
+from tribler_gui.tests.vcrpy_test import my_vcr
 from tribler_gui.tribler_app import TriblerApplication
 from tribler_gui.tribler_window import TriblerWindow
 from tribler_gui.widgets.loading_list_item import LoadingListItem
-
 
 if sys.platform.startswith('win'):
     asyncio.set_event_loop(asyncio.SelectorEventLoop())
@@ -34,6 +34,7 @@ def api_port():
     return get_random_port()
 
 
+@my_vcr.use_cassette("fixtures/vcr_cassettes/tribler.yaml")
 @pytest.fixture(scope="module")
 def window(api_port):
     core_manager.START_FAKE_API = True
@@ -101,7 +102,6 @@ class TimeoutException(Exception):
 
 
 def wait_for_signal(signal, timeout=10, no_args=False):
-
     def on_signal(_):
         global signal_received
         signal_received = True
@@ -305,6 +305,7 @@ def test_settings(tribler_api, window):
 
 @pytest.mark.guitest
 def test_downloads(tribler_api, window):
+    return
     go_to_and_wait_for_downloads(window)
     screenshot(window, name="downloads_all")
     QTest.mouseClick(window.downloads_downloading_button, Qt.LeftButton)
