@@ -1,5 +1,6 @@
 import os
 import sys
+from pathlib import Path
 
 from PyQt5.QtCore import QObject, QProcess, QProcessEnvironment, QTimer, pyqtSignal
 from PyQt5.QtNetwork import QNetworkRequest
@@ -97,7 +98,8 @@ class CoreManager(QObject):
             self.core_process.setProcessChannelMode(QProcess.MergedChannels)
             self.core_process.readyRead.connect(self.on_core_read_ready)
             self.core_process.finished.connect(self.on_core_finished)
-            self.core_process.start(sys.executable, core_args)
+            core_args[0] = str(Path(core_args[0]).parent / Path("run_tribler_core.py"))
+            self.core_process.start('python', core_args)
 
         self.check_core_ready()
 
