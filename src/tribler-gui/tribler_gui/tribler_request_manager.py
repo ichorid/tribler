@@ -12,6 +12,28 @@ import tribler_core.utilities.json_util as json
 from tribler_gui.defs import BUTTON_TYPE_NORMAL, DEFAULT_API_HOST, DEFAULT_API_PORT, DEFAULT_API_PROTOCOL
 from tribler_gui.dialogs.confirmationdialog import ConfirmationDialog
 
+RECORD_REQUESTS = True
+CASSETTE_NAME = "./cassette.json"
+captured_requests = {}
+
+if RECORD_REQUESTS:
+    try:
+        with open(CASSETTE_NAME, "r") as f:
+            file_contents = f.read()
+        for record in file_contents.split("\n\n"):
+            rec = json.loads(record)
+            captured_requests[(rec["url"], rec["method"])] = rec["response"]
+    except:
+        pass
+
+
+def dump_cassette():
+    with open(CASSETTE_NAME, "w") as f:
+        for (url, method), response in captured_requests.items():
+            record = {"url": url, "method": method, "response": response}
+            f.write(json.dumps(record, indent=4))
+            f.write("\n\n")
+
 
 def tribler_urlencode(data):
     # Convert all keys and values in the data to utf-8 unicode strings
@@ -173,6 +195,8 @@ class TriblerNetworkRequest(QObject):
         self.reply_callback = reply_callback
         if self.reply_callback:
             self.received_json.connect(self.reply_callback)
+        if RECORD_REQUESTS:
+            self.received_json.connect(self.record_request)
 
         self.on_error_callback = on_error_callback
         if on_error_callback is not None:
@@ -181,6 +205,9 @@ class TriblerNetworkRequest(QObject):
 
         # Pass the newly created object to the manager singleton, so the object can be dispatched immediately
         request_manager.add_request(self)
+
+    def record_request(self, received_json):
+        captured_requests[(self.url, self.method)] = received_json
 
     def on_finished(self, request):
         status_code = self.reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
