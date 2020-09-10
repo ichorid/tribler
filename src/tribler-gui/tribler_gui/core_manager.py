@@ -1,11 +1,8 @@
-import os
 import sys
 
 from PyQt5.QtCore import QObject, QProcess, QProcessEnvironment, QTimer, pyqtSignal
 from PyQt5.QtNetwork import QNetworkRequest
 from PyQt5.QtWidgets import QApplication
-
-from tribler_common.utilities import is_frozen
 
 from tribler_gui.event_request_manager import EventRequestManager
 from tribler_gui.tribler_request_manager import TriblerNetworkRequest
@@ -27,8 +24,6 @@ class CoreManager(QObject):
         QObject.__init__(self, None)
 
         self.base_path = get_base_path()
-        if not is_frozen():
-            self.base_path = os.path.join(get_base_path(), "..")
 
         self.core_process = None
         self.api_port = api_port
@@ -80,24 +75,27 @@ class CoreManager(QObject):
         self.events_manager.connect()
         self.events_manager.reply.error.connect(on_request_error)
 
-    def start_tribler_core(self, core_args=None, core_env=None):
-        if not START_FAKE_API:
-            if not core_env:
-                core_env = QProcessEnvironment.systemEnvironment()
-                core_env.insert("CORE_PROCESS", "1")
-                core_env.insert("CORE_BASE_PATH", self.base_path)
-                core_env.insert("CORE_API_PORT", "%s" % self.api_port)
-                core_env.insert("CORE_API_KEY", self.api_key.decode('utf-8'))
-            if not core_args:
-                core_args = sys.argv
+    def _start_tribler_core(self, core_args=None, core_env=None):
+        if core_env is None:
+            core_env = QProcessEnvironment.systemEnvironment()
+            core_env.insert("CORE_PROCESS", "1")
+            core_env.insert("CORE_BASE_PATH", self.base_path)
+            core_env.insert("CORE_API_PORT", "%s" % self.api_port)
+            core_env.insert("CORE_API_KEY", self.api_key.decode('utf-8'))
+        if core_args is None:
+            core_args = sys.argv
 
-            self.core_process = QProcess()
-            self.core_process.setProcessEnvironment(core_env)
-            self.core_process.setReadChannel(QProcess.StandardOutput)
-            self.core_process.setProcessChannelMode(QProcess.MergedChannels)
-            self.core_process.readyRead.connect(self.on_core_read_ready)
-            self.core_process.finished.connect(self.on_core_finished)
-            self.core_process.start(sys.executable, core_args)
+        self.core_process = QProcess()
+        self.core_process.setProcessEnvironment(core_env)
+        self.core_process.setReadChannel(QProcess.StandardOutput)
+        self.core_process.setProcessChannelMode(QProcess.MergedChannels)
+        self.core_process.readyRead.connect(self.on_core_read_ready)
+        self.core_process.finished.connect(self.on_core_finished)
+        self.core_process.start(sys.executable, core_args)
+
+    def start_tribler_core(self, *args, **kwargs):
+        if not START_FAKE_API:
+            self._start_tribler_core(*args, **kwargs)
 
         self.check_core_ready()
 

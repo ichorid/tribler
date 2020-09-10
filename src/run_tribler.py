@@ -45,8 +45,6 @@ def start_tribler_core(base_path, api_port, api_key, root_state_dir):
         logging.info("Stopping Tribler core")
         ensure_future(session.shutdown()).add_done_callback(on_tribler_shutdown)
 
-    sys.path.insert(0, base_path)
-
     async def start_tribler():
         # Check if we are already running a Tribler instance
         process_checker = ProcessChecker(root_state_dir)
