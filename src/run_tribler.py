@@ -15,7 +15,7 @@ from tribler_core.version import version_id
 import tribler_gui
 
 
-def start_tribler_core(base_path, api_port, api_key, root_state_dir):
+def start_tribler_core(api_port, api_key, root_state_dir):
     """
     This method will start a new Tribler session.
     Note that there is no direct communication between the GUI process and the core: all communication is performed
@@ -92,11 +92,10 @@ if __name__ == "__main__":
         # Check for missing Core dependencies
         check_for_missing_dependencies(scope='core')
 
-        base_path = os.environ['CORE_BASE_PATH']
         api_port = os.environ['CORE_API_PORT']
         api_key = os.environ['CORE_API_KEY']
 
-        start_tribler_core(base_path, api_port, api_key, root_state_dir)
+        start_tribler_core(api_port, api_key, root_state_dir)
     else:
         # Set up logging
         tribler_gui.load_logger_config(root_state_dir)

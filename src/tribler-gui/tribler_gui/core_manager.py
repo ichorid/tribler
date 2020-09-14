@@ -79,7 +79,6 @@ class CoreManager(QObject):
         if core_env is None:
             core_env = QProcessEnvironment.systemEnvironment()
             core_env.insert("CORE_PROCESS", "1")
-            core_env.insert("CORE_BASE_PATH", self.base_path)
             core_env.insert("CORE_API_PORT", "%s" % self.api_port)
             core_env.insert("CORE_API_KEY", self.api_key.decode('utf-8'))
         if core_args is None:

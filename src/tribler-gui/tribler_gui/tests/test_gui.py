@@ -1,21 +1,16 @@
 import asyncio
-import logging
 import os
 import sys
-import threading
 import time
-from asyncio import new_event_loop, set_event_loop
 
-from PyQt5.QtCore import QPoint, QTimer, Qt
+from PyQt5.QtCore import QPoint, QProcess, QProcessEnvironment, QTimer, Qt
 from PyQt5.QtGui import QPixmap, QRegion
 from PyQt5.QtTest import QTest
 from PyQt5.QtWidgets import QApplication, QListWidget, QTableView, QTextEdit, QTreeWidget
 
-from aiohttp import web
-
 import pytest
 
-from tribler_core.utilities.network_utils import get_random_port
+from tribler_core.utilities.path_util import Path
 
 import tribler_gui
 import tribler_gui.core_manager as core_manager
@@ -27,10 +22,14 @@ from tribler_gui.widgets.loading_list_item import LoadingListItem
 if sys.platform.startswith('win'):
     asyncio.set_event_loop(asyncio.SelectorEventLoop())
 
+RESPONSE_FILE = Path(os.environ["CASSETTE_FILENAME"])
+
+RECORD_RESPONSE_MODE = not RESPONSE_FILE.exists()
+
 
 @pytest.fixture(scope="module")
 def api_port():
-    return get_random_port()
+    return 8085
 
 
 @pytest.fixture(scope="module")
@@ -46,44 +45,37 @@ def window(api_port):
     screenshot(window, name="tribler_loading")
     wait_for_signal(window.core_manager.events_manager.tribler_started, no_args=True)
     window.downloads_page.can_update_items = True
+
     yield window
     QApplication.quit()
 
 
 @pytest.fixture(scope="module")
 def tribler_api(api_port):
-    def start():
-        from tribler_gui.tests.fake_tribler_api.endpoints.root_endpoint import RootEndpoint
-        from tribler_gui.tests.fake_tribler_api.tribler_data import TriblerData
-        import tribler_gui.tests.fake_tribler_api.tribler_utils as tribler_utils
+    if RECORD_RESPONSE_MODE:
+        # Run real Core and record responses
+        core_env = QProcessEnvironment.systemEnvironment()
+        core_env.insert("CORE_PROCESS", "1")
+        core_env.insert("CORE_API_PORT", "%s" % 8085)
+        core_env.insert("CORE_API_KEY", "")
 
-        def generate_tribler_data():
-            tribler_utils.tribler_data = TriblerData()
-            tribler_utils.tribler_data.generate()
+        core_process = QProcess()
 
-        logging.basicConfig()
-        logger = logging.getLogger(__file__)
-        logger.setLevel(logging.INFO)
+        def on_core_read_ready():
+            raw_output = bytes(core_process.readAll())
+            decoded_output = raw_output.decode(errors="replace")
+            print(decoded_output.strip())
 
-        logger.info("Generating random Tribler data")
-        generate_tribler_data()
-
-        root_endpoint = RootEndpoint(None)
-        runner = web.AppRunner(root_endpoint.app)
-
-        loop = new_event_loop()
-        set_event_loop(loop)
-
-        loop.run_until_complete(runner.setup())
-        logger.info("Starting fake Tribler API on port %d", api_port)
-        site = web.TCPSite(runner, 'localhost', api_port)
-        loop.run_until_complete(site.start())
-        loop.run_forever()
-
-    # Start the fake API
-    t = threading.Thread(target=start)
-    t.setDaemon(True)
-    t.start()
+        core_process.setProcessEnvironment(core_env)
+        core_process.setReadChannel(QProcess.StandardOutput)
+        core_process.setProcessChannelMode(QProcess.MergedChannels)
+        core_process.readyRead.connect(on_core_read_ready)
+        core_process.start("python", ["/home/vader/my_SRC/TRIBLER/tribler_ichorid/src/run_tribler.py"])
+        yield core_process
+        core_process.terminate()
+        core_process.waitForFinished()
+    else:
+        yield
 
 
 def no_abort(*args, **kwargs):

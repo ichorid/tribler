@@ -1,6 +1,8 @@
-import json
+import atexit
 import logging
+import os
 from collections import deque
+from pathlib import Path
 from time import time
 from urllib.parse import quote_plus
 
@@ -12,27 +14,33 @@ import tribler_core.utilities.json_util as json
 from tribler_gui.defs import BUTTON_TYPE_NORMAL, DEFAULT_API_HOST, DEFAULT_API_PORT, DEFAULT_API_PROTOCOL
 from tribler_gui.dialogs.confirmationdialog import ConfirmationDialog
 
-RECORD_REQUESTS = True
-CASSETTE_NAME = "./cassette.json"
+RECORD_REQUESTS = "RECORD_REQUESTS" in os.environ
+REPLAY_REQUESTS = "REPLAY_REQUESTS" in os.environ
+CASSETTE_FILENAME = None
 captured_requests = {}
 
+if RECORD_REQUESTS or REPLAY_REQUESTS:
+    CASSETTE_FILENAME = Path(os.environ["CASSETTE_FILENAME"])
+
+if REPLAY_REQUESTS and CASSETTE_FILENAME.exists():
+    # Read the existing cassette and try to fetch requests from it if possible
+    with open(CASSETTE_FILENAME, "r") as f:
+        file_contents = f.read()
+    for record in file_contents.split("\n\n"):
+        if not record:
+            continue
+        rec = json.loads(record)
+        captured_requests[(rec["url"], rec["method"])] = rec["response"]
+
 if RECORD_REQUESTS:
-    try:
-        with open(CASSETTE_NAME, "r") as f:
-            file_contents = f.read()
-        for record in file_contents.split("\n\n"):
-            rec = json.loads(record)
-            captured_requests[(rec["url"], rec["method"])] = rec["response"]
-    except:
-        pass
 
-
-def dump_cassette():
-    with open(CASSETTE_NAME, "w") as f:
-        for (url, method), response in captured_requests.items():
-            record = {"url": url, "method": method, "response": response}
-            f.write(json.dumps(record, indent=4))
-            f.write("\n\n")
+    @atexit.register
+    def dump_cassette():
+        with open(CASSETTE_FILENAME, "w") as f:
+            for (url, method), response in captured_requests.items():
+                record = {"url": url, "method": method, "response": response}
+                f.write(json.dumps(record, indent=4))
+                f.write("\n\n")
 
 
 def tribler_urlencode(data):

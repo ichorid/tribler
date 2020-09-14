@@ -82,7 +82,7 @@ def dump(obj, fp, ensure_ascii=True):
         raise error
 
 
-def dumps(obj, ensure_ascii=True):
+def dumps(obj, ensure_ascii=True, **kwargs):
     """
     Attempt to json.dumps() an object. This function provides additional info if the object can't be serialized.
 
@@ -91,7 +91,7 @@ def dumps(obj, ensure_ascii=True):
     :return: the JSON str representation of the object.
     """
     try:
-        return json.dumps(obj, ensure_ascii=ensure_ascii)
+        return json.dumps(obj, ensure_ascii=ensure_ascii, **kwargs)
     except UnicodeDecodeError as e:
         undumpables = _scan_iterable(obj)
         traces = '\n\t'.join(['->'.join(u) for u in undumpables])
