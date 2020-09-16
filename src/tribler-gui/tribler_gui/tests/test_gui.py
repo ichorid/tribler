@@ -52,7 +52,8 @@ def window(api_port):
 
 @pytest.fixture(scope="module")
 def tribler_api(api_port):
-    if RECORD_RESPONSE_MODE:
+    if True:
+        # if RECORD_RESPONSE_MODE:
         # Run real Core and record responses
         core_env = QProcessEnvironment.systemEnvironment()
         core_env.insert("CORE_PROCESS", "1")
@@ -75,7 +76,7 @@ def tribler_api(api_port):
         core_process.terminate()
         core_process.waitForFinished()
     else:
-        yield
+        yield True
 
 
 def no_abort(*args, **kwargs):

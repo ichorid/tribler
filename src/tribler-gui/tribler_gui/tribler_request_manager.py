@@ -197,25 +197,49 @@ class TriblerNetworkRequest(QObject):
         self.on_cancel = on_cancel
         self.method = method
         self.capture_core_errors = capture_core_errors
+        self.reply = None  # to hold the associated QNetworkReply object
         if data:
             raw_data = json.dumps(data)
         self.raw_data = raw_data if (issubclass(type(raw_data), bytes) or raw_data is None) else raw_data.encode('utf8')
         self.reply_callback = reply_callback
+
         if self.reply_callback:
             self.received_json.connect(self.reply_callback)
+
+        def print_args(*args, **kwargs):
+            print("\n\n")
+            print(args, kwargs)
+            print("\n\n")
+
+        self.received_json.connect(print_args)
+
+        if REPLAY_REQUESTS:
+            saved_reply = captured_requests.get(self.request_signature)
+            if saved_reply is not None:
+                # if self.reply_callback:
+                #    self.reply_callback(saved_reply)
+                # For some reason, this is called with additional argument?
+                self.received_json.emit(saved_reply, None)
+            self.destruct()
+            return
         if RECORD_REQUESTS:
             self.received_json.connect(self.record_request)
 
         self.on_error_callback = on_error_callback
         if on_error_callback is not None:
             self.received_error.connect(on_error_callback)
-        self.reply = None  # to hold the associated QNetworkReply object
 
         # Pass the newly created object to the manager singleton, so the object can be dispatched immediately
         request_manager.add_request(self)
 
+    @property
+    def request_signature(self):
+        # This property must return some hashable and str-printable object that uniquely identifies the request.
+        # It is used during tests to lookup the corresponding request from recorded requests file.
+        return self.url, self.method
+
     def record_request(self, received_json):
-        captured_requests[(self.url, self.method)] = received_json
+        captured_requests[self.request_signature] = received_json
 
     def on_finished(self, request):
         status_code = self.reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)

@@ -195,6 +195,11 @@ class RemoteTableModel(QAbstractTableModel):
         if not response:
             return False
 
+        if type(remote) is not bool:
+            # print (repr(response))
+            # print (repr(remote))
+            raise
+
         if not remote or (uuid.UUID(response.get('uuid')) in self.remote_queries):
             self.add_items(response['results'], on_top=remote or on_top)
             if "total" in response:
