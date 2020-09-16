@@ -22,6 +22,8 @@ from tribler_gui.widgets.loading_list_item import LoadingListItem
 if sys.platform.startswith('win'):
     asyncio.set_event_loop(asyncio.SelectorEventLoop())
 
+RUN_TRIBLER_PY = Path(tribler_gui.__file__).parent.parent.parent / "run_tribler.py"
+
 RESPONSE_FILE = Path(os.environ["CASSETTE_FILENAME"])
 
 RECORD_RESPONSE_MODE = not RESPONSE_FILE.exists()
@@ -71,7 +73,7 @@ def tribler_api(api_port):
         core_process.setReadChannel(QProcess.StandardOutput)
         core_process.setProcessChannelMode(QProcess.MergedChannels)
         core_process.readyRead.connect(on_core_read_ready)
-        core_process.start("python", ["/home/vader/my_SRC/TRIBLER/tribler_ichorid/src/run_tribler.py"])
+        core_process.start("python", [str(RUN_TRIBLER_PY.absolute())])
         yield core_process
         core_process.terminate()
         core_process.waitForFinished()

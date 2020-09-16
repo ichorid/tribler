@@ -207,9 +207,8 @@ class TriblerNetworkRequest(QObject):
             self.received_json.connect(self.reply_callback)
 
         def print_args(*args, **kwargs):
-            print("\n\n")
+            print("\n")
             print(args, kwargs)
-            print("\n\n")
 
         self.received_json.connect(print_args)
 
@@ -219,7 +218,7 @@ class TriblerNetworkRequest(QObject):
                 # if self.reply_callback:
                 #    self.reply_callback(saved_reply)
                 # For some reason, this is called with additional argument?
-                self.received_json.emit(saved_reply, None)
+                self.received_json.emit(saved_reply)
             self.destruct()
             return
         if RECORD_REQUESTS:
