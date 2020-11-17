@@ -30,6 +30,10 @@ def sanitize_query(query_dict, cap=100):
     if infohash:
         query_dict['infohash'] = unhexlify(infohash)
 
+    channel_pk = query_dict.get('channel_pk', None)
+    if channel_pk:
+        query_dict['channel_pk'] = unhexlify(channel_pk)
+
     return query_dict
 
 
@@ -66,6 +70,7 @@ class RemoteQueryCommunitySettings:
         self.max_entries = self.maximum_payload_size // self.minimal_blob_size
         self.max_query_peers = 5
         self.max_response_size = 100  # Max number of entries returned by SQL query
+        self.max_channel_query_back = 4  # Max number of entries to query back on receiving an unknown channel
 
 
 class RemoteQueryCommunity(Community):
@@ -180,16 +185,25 @@ class RemoteQueryCommunity(Community):
 
         self.logger.info(f"Response result: {result}")
         # Maybe move this callback to MetadataStore side?
-        if self.notifier:
-            new_channels = [
-                md.to_simple_dict()
-                for md, result in result
-                if md and md.metadata_type == CHANNEL_TORRENT and result == UNKNOWN_CHANNEL and md.origin_id == 0
-            ]
-            if new_channels:
-                self.notifier.notify(
-                    NTFY.CHANNEL_DISCOVERED, {"results": new_channels, "uuid": str(CHANNELS_VIEW_UUID)}
-                )
+        new_channels = [
+            md
+            for md, result in result
+            if md and md.metadata_type == CHANNEL_TORRENT and result == UNKNOWN_CHANNEL and md.origin_id == 0
+        ]
+        if self.notifier and new_channels:
+            self.notifier.notify(
+                NTFY.CHANNEL_DISCOVERED,
+                {"results": [md.to_simple_dict() for md in new_channels], "uuid": str(CHANNELS_VIEW_UUID)},
+            )
+        if new_channels and self.settings.max_channel_query_back > 0:
+            for channel in new_channels:
+                request_dict = {
+                    "channel_pk": hexlify(channel.public_key),
+                    "origin_id": channel.id_,
+                    "first": 0,
+                    "last": self.settings.max_channel_query_back,
+                }
+                self.send_remote_select(peer=peer, **request_dict)
 
     def introduction_response_callback(self, peer, dist, payload):
         if peer.address in self.network.blacklist or peer.mid in self.queried_subscribed_channels_peers:

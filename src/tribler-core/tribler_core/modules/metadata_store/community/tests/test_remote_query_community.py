@@ -62,6 +62,8 @@ class TestRemoteQueryCommunity(TestBase):
         return self.nodes[i].overlay
 
     async def test_remote_select(self):
+        # We do not want the query back mechanism to interfere with this test
+        self.nodes[1].overlay.settings.max_channel_query_back = 0
         # Fill Node 0 DB with channels and torrents entries
         with db_session:
             channel_uns = self.nodes[0].overlay.mds.ChannelMetadata.create_channel("ubuntu channel unsub", "ubuntu")
@@ -112,7 +114,8 @@ class TestRemoteQueryCommunity(TestBase):
 
     async def test_remote_select_subscribed_channels(self):
         """
-        Test querying remote peers for subscribed channels and updating local votes accordingly
+        Test querying remote peers for subscribed channels and updating local votes accordingly.
+        Also, test querying back preview contents for previously unknown channels.
         """
 
         def mock_notify(overlay, args):
@@ -122,14 +125,19 @@ class TestRemoteQueryCommunity(TestBase):
         self.nodes[1].overlay.notifier = Notifier()
         self.nodes[1].overlay.notifier.notify = lambda sub, args: mock_notify(self.nodes[1].overlay, args)
 
+        num_channels = 5
+        max_received_torrents_per_channel_query_back = 4
+
         with db_session:
             # Create one channel with zero contents, to check that only non-empty channels are served
             self.nodes[0].overlay.mds.ChannelMetadata.create_channel("channel sub", "")
-            for _ in range(0, 5):
+            for _ in range(0, num_channels):
                 chan = self.nodes[0].overlay.mds.ChannelMetadata.create_channel("channel sub", "")
-                chan.num_entries = 5
+                chan.num_entries = max_received_torrents_per_channel_query_back
+                for _2 in range(0, chan.num_entries):
+                    self.nodes[0].overlay.mds.TorrentMetadata(origin_id=chan.id_, infohash=random_infohash())
                 chan.sign()
-            for _ in range(0, 5):
+            for _ in range(0, num_channels):
                 channel_uns = self.nodes[0].overlay.mds.ChannelMetadata.create_channel("channel unsub", "")
                 channel_uns.subscribed = False
 
@@ -140,10 +148,10 @@ class TestRemoteQueryCommunity(TestBase):
 
         with db_session:
             received_channels = self.nodes[1].overlay.mds.ChannelMetadata.select(lambda g: g.title == "channel sub")
-            self.assertEqual(received_channels.count(), 5)
+            self.assertEqual(received_channels.count(), num_channels)
             # Only subscribed channels should have been transported
             received_channels_all = self.nodes[1].overlay.mds.ChannelMetadata.select()
-            self.assertEqual(received_channels_all.count(), 5)
+            self.assertEqual(received_channels_all.count(), num_channels)
 
             # Make sure the subscribed channels transport counted as voting
             self.assertEqual(
@@ -151,6 +159,13 @@ class TestRemoteQueryCommunity(TestBase):
             )
             for chan in self.nodes[1].overlay.mds.ChannelMetadata.select():
                 self.assertTrue(chan.votes > 0.0)
+
+            # For each unknown channel that we received, we queried the sender for 4 preview torrents.
+            # This check that it worked and we received the preview torrents
+            received_torrents = self.nodes[1].overlay.mds.TorrentMetadata.select(
+                lambda g: g.metadata_type == REGULAR_TORRENT
+            )
+            self.assertEqual(received_torrents.count(), num_channels * max_received_torrents_per_channel_query_back)
 
         # Check that the notifier callback is called on new channel entries
         self.assertTrue(self.nodes[1].overlay.notified_results)
@@ -160,6 +175,9 @@ class TestRemoteQueryCommunity(TestBase):
         Test dropping packets that go over the response limit for a remote select.
 
         """
+        # We do not want the query back mechanism to interfere with this test
+        self.nodes[1].overlay.settings.max_channel_query_back = 0
+
         with db_session:
             for _ in range(0, 100):
                 self.nodes[0].overlay.mds.ChannelMetadata.create_channel(random_string(100), "")
