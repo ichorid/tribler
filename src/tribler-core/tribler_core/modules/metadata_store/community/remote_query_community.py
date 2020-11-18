@@ -95,6 +95,8 @@ class RemoteQueryCommunitySettings:
         self.max_query_peers = 5
         self.max_response_size = 100  # Max number of entries returned by SQL query
         self.max_channel_query_back = 4  # Max number of entries to query back on receiving an unknown channel
+        # this flag enables or disables https://github.com/Tribler/tribler/pull/5657
+        self.enable_resolve_unknown_torrents_feature = True
 
 
 class RemoteQueryCommunity(Community):
@@ -123,16 +125,13 @@ class RemoteQueryCommunity(Community):
         if self.notifier:
             self.notifier.add_observer(NTFY.POPULARITY_COMMUNITY_ADD_UNKNOWN_TORRENT, self.on_pc_add_unknown_torrent)
 
-        # this flag enable or disable https://github.com/Tribler/tribler/pull/5657
-        # it can be changed in runtime
-        self.enable_resolve_unknown_torrents_feature = False
         self.add_message_handler(RemoteSelectPayload, self.on_remote_select)
         self.add_message_handler(SelectResponsePayload, self.on_remote_select_response)
 
         self.request_cache = RequestCache()
 
     def on_pc_add_unknown_torrent(self, peer, infohash):
-        if not self.enable_resolve_unknown_torrents_feature:
+        if not self.settings.enable_resolve_unknown_torrents_feature:
             return
         query = {'infohash': hexlify(infohash)}
         self.send_remote_select(peer, **query)

@@ -291,9 +291,6 @@ class TestRemoteQueryCommunity(TestBase):
         rqc1 = self.nodes[0].overlay
         rqc2 = self.nodes[1].overlay
 
-        rqc1.enable_resolve_unknown_torrents_feature = enabled
-        rqc2.enable_resolve_unknown_torrents_feature = enabled
-
         db1 = rqc1.mds.TorrentMetadata
         db2 = rqc2.mds.TorrentMetadata
 
@@ -318,7 +315,7 @@ class TestRemoteQueryCommunity(TestBase):
         with db_session:
             torrent_is_presented_on_db2 = db2.select(has_testing_infohash).count() == 1
 
-        if rqc2.enable_resolve_unknown_torrents_feature:
+        if rqc2.settings.enable_resolve_unknown_torrents_feature:
             assert torrent_is_presented_on_db2
         else:
             assert not torrent_is_presented_on_db2
