@@ -66,6 +66,8 @@ def define_binding(db, logger=None, key=None):
         id_ = orm.Required(int, size=64)
         orm.composite_key(public_key, id_)
 
+        orm.composite_index(public_key, origin_id)
+
         timestamp = orm.Required(int, size=64, default=0)
         # Signature is nullable. This means that "None" entries are stored in DB as NULLs instead of empty strings.
         # NULLs are not checked for uniqueness and not indexed.

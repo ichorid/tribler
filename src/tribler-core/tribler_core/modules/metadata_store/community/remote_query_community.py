@@ -13,8 +13,8 @@ from pony.orm.dbapiprovider import OperationalError
 from tribler_common.simpledefs import CHANNELS_VIEW_UUID, NTFY
 
 from tribler_core.modules.metadata_store.orm_bindings.channel_metadata import entries_to_chunk
-from tribler_core.modules.metadata_store.serialization import CHANNEL_TORRENT
-from tribler_core.modules.metadata_store.store import UNKNOWN_CHANNEL
+from tribler_core.modules.metadata_store.serialization import CHANNEL_TORRENT, COLLECTION_NODE
+from tribler_core.modules.metadata_store.store import GOT_NEWER_VERSION, UNKNOWN_CHANNEL
 from tribler_core.utilities.unicode import hexlify
 
 TRANSITIONAL_PREFIX = "transitional_"
@@ -215,18 +215,41 @@ class RemoteQueryCommunity(Community):
             for md, result in result
             if md and md.metadata_type == CHANNEL_TORRENT and result == UNKNOWN_CHANNEL and md.origin_id == 0
         ]
+
+        new_folders = [md for md, result in result if md and md.metadata_type == COLLECTION_NODE]
+
         if self.notifier and new_channels:
             self.notifier.notify(
                 NTFY.CHANNEL_DISCOVERED,
                 {"results": [md.to_simple_dict() for md in new_channels], "uuid": str(CHANNELS_VIEW_UUID)},
             )
-        if new_channels and self.settings.max_channel_query_back > 0:
+
+        new_channels = [
+            md
+            for md, result in result
+            if md
+            and md.metadata_type == CHANNEL_TORRENT
+            and result in (UNKNOWN_CHANNEL, GOT_NEWER_VERSION)
+            and md.origin_id == 0
+        ]
+        if new_channels or new_folders and self.settings.max_channel_query_back > 0:
             for channel in new_channels:
+                print(channel.title)
                 request_dict = {
-                    "channel_pk": hexlify(channel.public_key),
+                    # "channel_pk": hexlify(channel.public_key),
                     "origin_id": channel.id_,
                     "first": 0,
-                    "last": self.settings.max_channel_query_back,
+                    "last": 20,
+                }
+                self.send_remote_select(peer=peer, **request_dict)
+
+            for folder in new_folders:
+                print(folder.title)
+                request_dict = {
+                    # "channel_pk": hexlify(channel.public_key),
+                    "origin_id": folder.id_,
+                    "first": 0,
+                    "last": 50,
                 }
                 self.send_remote_select(peer=peer, **request_dict)
 
