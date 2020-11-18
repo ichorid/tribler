@@ -1,5 +1,7 @@
+import json
 from datetime import datetime
 from json import dumps
+from unittest.mock import Mock
 
 from ipv8.keyvault.crypto import default_eccrypto
 from ipv8.peer import Peer
@@ -10,7 +12,12 @@ from pony.orm.dbapiprovider import OperationalError
 
 from tribler_common.simpledefs import NTFY
 
-from tribler_core.modules.metadata_store.community.remote_query_community import RemoteQueryCommunity, sanitize_query
+from tribler_core.modules.metadata_store.community.remote_query_community import (
+    RemoteQueryCommunity,
+    current_to_transitional,
+    sanitize_query,
+    transitional_to_current,
+)
 from tribler_core.modules.metadata_store.orm_bindings.channel_node import NEW
 from tribler_core.modules.metadata_store.serialization import CHANNEL_TORRENT, REGULAR_TORRENT
 from tribler_core.modules.metadata_store.store import MetadataStore
@@ -242,8 +249,7 @@ class TestRemoteQueryCommunity(TestBase):
         infohash_in_hex = hexlify(infohash_in_b)
 
         query = {'infohash': infohash_in_hex}
-        sanitize_query(query)
-        assert query['infohash'] == infohash_in_b
+        assert sanitize_query(query)['infohash'] == infohash_in_b
 
         # assert no exception raises when 'infohash' is missed
         sanitize_query({})
@@ -407,3 +413,26 @@ class TestRemoteQueryCommunity(TestBase):
         """
         with self.assertRaises(OperationalError):
             await self.overlay(0).process_rpc_query(b'{"txt_filter":{"key":"bla"}}')
+
+    def test_transitional_properties(self):
+        """
+        Test converting query properties to and from transitional format
+        """
+        trans_props_dict = {"transitional_channel_pk": "ff", "transitional_infohash": "ee", "first": 0}
+        props_dict = {"channel_pk": "ff", "infohash": "ee", "first": 0}
+
+        assert transitional_to_current(trans_props_dict) == props_dict
+        assert current_to_transitional(props_dict) == trans_props_dict
+
+    def test_remote_select_uses_transitional_properties(self):
+        """
+        Test that we use transitional properties in remote select
+        """
+        # We do not want the query back mechanism to interfere with this test
+        self.nodes[0].overlay.settings.max_channel_query_back = 0
+
+        kwargs_dict = {"infohash": "ff", "channel_pk": "ee", "foo": 2}
+        transitional_dict = {"transitional_infohash": "ff", "transitional_channel_pk": "ee", "foo": 2}
+        self.nodes[0].overlay.ez_send = Mock()
+        self.nodes[0].overlay.send_remote_select(self.nodes[0].my_peer, **kwargs_dict)
+        self.assertEqual(transitional_dict, json.loads(self.nodes[0].overlay.ez_send.call_args.args[1].json))

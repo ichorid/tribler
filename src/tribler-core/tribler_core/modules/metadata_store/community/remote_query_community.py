@@ -17,24 +17,48 @@ from tribler_core.modules.metadata_store.serialization import CHANNEL_TORRENT
 from tribler_core.modules.metadata_store.store import UNKNOWN_CHANNEL
 from tribler_core.utilities.unicode import hexlify
 
+TRANSITIONAL_PREFIX = "transitional_"
+TRANSITIONAL_ENTRIES = ("infohash", "channel_pk")
+
+
+def transitional_to_current(prop_dict):
+    """
+    Convert remote query properties names from transitional to original
+    """
+    adjusted_dict = dict()
+    for prop, value in prop_dict.items():
+        adjusted_dict[prop[prop.startswith(TRANSITIONAL_PREFIX) and len(TRANSITIONAL_PREFIX) :]] = value
+    return adjusted_dict
+
+
+def current_to_transitional(prop_dict):
+    """
+    Convert remote query properties names from original to transitional
+    """
+    adjusted_dict = dict()
+    for prop, value in prop_dict.items():
+        adjusted_dict[prop if prop not in TRANSITIONAL_ENTRIES else (TRANSITIONAL_PREFIX + prop)] = value
+
+    return adjusted_dict
+
 
 def sanitize_query(query_dict, cap=100):
+    # Translate transitional infohash and channel_pk properties into the real ones
+    # These transitional_ entries exist to avoid crashing pre-7.5.4 Tribler clients.
+    sanitized_dict = transitional_to_current(query_dict)
+
     # We impose a cap on max numbers of returned entries to prevent DDOS-like attacks
-    first, last = query_dict.get("first", None), query_dict.get("last", None)
+    first, last = sanitized_dict.get("first", None), sanitized_dict.get("last", None)
     first = first or 0
     last = last if (last is not None and last <= (first + cap)) else (first + cap)
-    query_dict.update({"first": first, "last": last})
+    sanitized_dict.update({"first": first, "last": last})
 
-    # convert hex infohash to binary
-    infohash = query_dict.get('infohash', None)
-    if infohash:
-        query_dict['infohash'] = unhexlify(infohash)
+    # convert hex fields to binary
+    for field in ("infohash", "channel_pk", "signature"):
+        if field in sanitized_dict:
+            sanitized_dict[field] = unhexlify(sanitized_dict[field])
 
-    channel_pk = query_dict.get('channel_pk', None)
-    if channel_pk:
-        query_dict['channel_pk'] = unhexlify(channel_pk)
-
-    return query_dict
+    return sanitized_dict
 
 
 @vp_compile
@@ -121,6 +145,7 @@ class RemoteQueryCommunity(Community):
         return all_peers
 
     def send_remote_select(self, peer, **kwargs):
+        kwargs = current_to_transitional(kwargs)
         request = SelectRequest(self.request_cache, hexlify(peer.mid), kwargs)
         self.request_cache.add(request)
 
@@ -147,6 +172,7 @@ class RemoteQueryCommunity(Community):
         :raises ValueError: if no JSON could be decoded.
         :raises pony.orm.dbapiprovider.OperationalError: if an illegal query was performed.
         """
+
         request_sanitized = sanitize_query(json.loads(json_bytes), self.settings.max_response_size)
         return await self.mds.MetadataNode.get_entries_threaded(**request_sanitized)
 
