@@ -11,7 +11,6 @@ from ipv8.peerdiscovery.network import Network
 from pony.orm import db_session
 
 from tribler_common.simpledefs import CHANNELS_VIEW_UUID, NTFY
-from tribler_core.modules.metadata_store.community.discovery_booster import DiscoveryBoosterMixin
 
 from tribler_core.modules.metadata_store.community.remote_query_community import (
     RemoteQueryCommunity,
@@ -130,14 +129,19 @@ class NonLegacyGigaChannelCommunity(RemoteQueryCommunity):
         return request_uuid
 
 
-class GigaChannelCommunity(DiscoveryBoosterMixin, NonLegacyGigaChannelCommunity):
+class GigaChannelCommunity(NonLegacyGigaChannelCommunity):
     def __init__(self, *args, **kwargs):
+        self.components = kwargs.pop('components', None)
         super().__init__(*args, **kwargs)
 
         # Register legacy payload
         self.add_message_handler(LegacySelectResponsePayload, self.legacy_on_remote_select_response)
-
         self.new_style_peers = set()
+
+        # apply components
+        if self.components:
+            for component in self.components:
+                component.apply(self)
 
     def legacy_send_remote_select_subscribed_channels(self, peer):
         def on_packet_callback(_, processing_results):

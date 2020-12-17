@@ -185,7 +185,9 @@ class PopularityCommunityLauncher(IPv8CommunityLauncher):
 @walk_strategy(random_walk, target_peers=30)
 @walk_strategy(remove_peers, target_peers=INFINITE)
 class GigaChannelCommunityLauncher(IPv8CommunityLauncher):
-    pass
+    def get_kwargs(self, session):
+        from tribler_core.modules.metadata_store.community.discovery_booster import DiscoveryBooster
+        return {'components': [DiscoveryBooster()]}
 
 
 @precondition('session.config.get_chant_enabled()')
