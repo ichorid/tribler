@@ -8,12 +8,11 @@ from ipv8.lazy_community import lazy_wrapper
 from pony.orm import db_session
 
 from tribler_core.modules.metadata_store.community.remote_query_community import RemoteQueryCommunity
-from tribler_core.modules.popularity.channel_discovery_booster import ChannelDiscoveryBoosterMixin
 from tribler_core.modules.popularity.payload import TorrentsHealthPayload
 from tribler_core.utilities.unicode import hexlify
 
 
-class PopularityCommunity(ChannelDiscoveryBoosterMixin, RemoteQueryCommunity):
+class PopularityCommunity(RemoteQueryCommunity):
     """
     Community for disseminating the content across the network.
 
