@@ -12,6 +12,7 @@ from pony.orm import db_session
 
 from tribler_common.simpledefs import CHANNELS_VIEW_UUID, NTFY
 
+from tribler_core.modules.metadata_store.community.discovery_booster import DiscoveryBooster
 from tribler_core.modules.metadata_store.community.remote_query_community import (
     RemoteQueryCommunity,
     RemoteQueryCommunitySettings,
@@ -55,8 +56,11 @@ class NonLegacyGigaChannelCommunity(RemoteQueryCommunity):
         # ACHTUNG! We add extra_bytes here to identify the newer, 7.6+ version RemoteQuery/GigaChannel community
         # dialect, so that other 7.6+ are able to distinguish between the older and newer versions.
         return super().create_introduction_response(
-            *args, introduction=introduction, extra_bytes=MAGIC_GIGACHAN_VERSION_MARK, prefix=prefix,
-            new_style=new_style
+            *args,
+            introduction=introduction,
+            extra_bytes=MAGIC_GIGACHAN_VERSION_MARK,
+            prefix=prefix,
+            new_style=new_style,
         )
 
     def __init__(self, my_peer, endpoint, network, metadata_store, **kwargs):
@@ -66,6 +70,9 @@ class NonLegacyGigaChannelCommunity(RemoteQueryCommunity):
         # ACHTUNG! We create a separate instance of Network for this community because it
         # walks aggressively and wants lots of peers, which can interfere with other communities
         super().__init__(my_peer, endpoint, Network(), metadata_store, **kwargs)
+
+        self.discovery_booster = DiscoveryBooster()
+        self.discovery_booster.apply(self)
 
         # This set contains all the peers that we queried for subscribed channels over time.
         # It is emptied regularly. The purpose of this set is to work as a filter so we never query the same
