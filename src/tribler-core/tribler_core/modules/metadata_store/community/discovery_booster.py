@@ -36,16 +36,13 @@ class DiscoveryBooster:
         # maximize peer count at the end of a 30 seconds period
         self.walker = EdgeWalk(community, neighborhood_size=25, edge_length=25)
 
-        community.register_task(
-            self._take_step_task_name, self.take_step, interval=self.take_step_interval_in_sec
-        )
+        community.register_task(self._take_step_task_name, self.take_step, interval=self.take_step_interval_in_sec)
 
         community.register_anonymous_task('', self.finish, delay=self.timeout_in_sec)
 
     def finish(self):
         self.logger.info(
-            f'Finish. Set self.max_peers={self.saved_max_peers}. '
-            f'Cancel pending task: {self._take_step_task_name}'
+            f'Finish. Set self.max_peers={self.saved_max_peers}. Cancel pending task: {self._take_step_task_name}'
         )
         self.community.max_peers = self.saved_max_peers
         self.community.cancel_pending_task(self._take_step_task_name)
